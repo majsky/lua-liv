@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run current file",
+            "type": "lua-local",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/src",
+            "program": {
+                "lua": "lua",
+                "file": "${file}",
+            }
+        },
+    ]
+}
