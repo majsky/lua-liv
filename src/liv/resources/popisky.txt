@@ -1,0 +1,164 @@
+R_Schrack_PT	lava_svorka	A1	A2	11	21	31	41	prava_svorka	12	14	22	24	32	34	42	44	koniec_svoriek	END	
+R_Arteche_JN	lava_svorka	A	B	C	D	a	b	c	d	1	2	3	4	5	6	7	8	prava_svorka	10	11	20	21	30	31	40	41	50	51	60	61	70	71	80	81	koniec_svoriek	END	
+I_Moeller_PL7-IHK-NHK	lava_svorka	2	4	6	14	22	24	4.11	4.12	4.14	N	prava_svorka	1	3	5	11	12	13	21	1.11	1.12	1.14	111	112	114	N	koniec_svoriek	END	
+I_Moeller_PL7_IHK_NHK	lava_svorka	2	4	6	14	22	24	4.11	4.12	4.14	N	1.11	1.12	1.14	prava_svorka	1	3	5	11	12	13	21	111	112	114	N	koniec_svoriek	END	
+L__zlava	lava_svorka	vsetky	prava_svorka	koniec_svoriek	END	
+P__sprava	lava_svorka	prava_svorka	vsetky	koniec_svoriek	END	
+R_Arteche_FN	lava_svorka	A2	1	2	3	4	5	6	prava_svorka	7	8	9	10	11	12	13	14	koniec_svoriek	END	
+R_Arteche_FN2	lava_svorka	A1	1	2	B1	3	4	5	6	prava_svorka	7	8	9	10	11	12	13	14	koniec_svoriek	END	
+R_xxx_RA-70	lava_svorka	1	2	3	6	prava_svorka	4	5	7	8	koniec_svoriek	END	
+VS_Vaèk Sp_Obzor	lava_svorka	2	4	6	8	10	12	14	16	18	20	22	24	26	28	30	32	34	36	38	40	42	44	46	48	prava_svorka	1	3	5	7	9	11	13	15	17	19	21	23	25	27	29	31	33	35	37	39	41	43	45	47	koniec_svoriek	END	
+VS_Vaèk Sp_SEZ	lava_svorka	3	4	7	8	11	12	15	16	19	20	23	24	27	28	31	32	35	36	39	40	43	44	47	48	prava_svorka	1	2	5	6	9	10	13	14	17	18	21	22	25	26	29	30	33	34	37	38	41	42	45	46	koniec_svoriek	END	
+O_7SJ611+7SJ621 panel	lava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	prava_svorka	31	32	33	34	35	36	37	38	39	40	41	42	43	44	45	46	47	48	49	50	51	52	53	54	55	56	57	58	59	60	koniec_svoriek	END	
+P_CB_SINEAX I 538	lava_svorka	1	2	3	4	prava_svorka	5	6	7	8	koniec_svoriek	END
+R_LiV_pre zem. spoj.	lava_svorka	11+	21+	31+	41+	11-	21-	31-	41-	+	-	E	prava_svorka	12+	14+	22+	24+	32+	34+	42+	44+	12-	14-	22-	24-	32-	34-	42-	44-	koniec_svoriek	END
+R_Schneider_RM4UA	lava_svorka	15	16	18	25	26	28	prava_svorka	A1	A2	B2	B3	C	koniec_svoriek	END
+SS_ZS1b_skúšobná sv.	lava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	13	prava_svorka	21	22	23	24	25	26	27	28	29	30	31	32	33	koniec_svoriek	END
+R_xxx_RMT	lava_svorka	E	F	G	H	prava_svorka	A	B	C	D	koniec_svoriek	END
+R_Bender_SUD140	lava_svorka	11	12	14	21	22	24	prava_svorka	U	V	W	N	koniec_svoriek	END
+R_Bender_IR425	lava_svorka	11	12	14	21	22	24	T/R	prava_svorka	L1	L2	KE	E	A1	A2	koniec_svoriek	END
+R_Bender_VME421	lava_svorka	11	12	14	21	22	24	prava_svorka	U1/+	U1/-	L1	L2	L3	koniec_svoriek	END
+R_Bender_SUA143	lava_svorka	11	12	14	21	22	24	prava_svorka	A1	A2	 +/"	-/"	koniec_svoriek	END
+S_Modrany_stykac-C	lava_svorka	A2	2	4	6	92	02	04	14	22	22S	24	24S	32	32S	34	42	44	44S	prava_svorka	A1	1	3	5	91	01	03	13	21	21S	23	23S	31	31S	33	41	43	43S	koniec_svoriek	END
+R_SCHRACK_K2-09	lava_svorka	A2	2	4	6	14	prava_svorka	A1	1	3	5	13	koniec_svoriek	END
+I_xxx_PFL7	lava_svorka	2	4	6	N	prava_svorka	1	3	5	N	koniec_svoriek	END
+P_LiV_BCD	lava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	prava_svorka	+	++	A	B	C	D	E	koniec_svoriek	END
+O_Saltec_DM-024/2	lava_svorka	A	B	C	D	prava_svorka	E	F	G	H	koniec_svoriek	END
+Z_SEZ_SZ 1 24/230	lava_svorka	L	N	prava_svorka	+	-	koniec_svoriek	END
+D_diody	lava_svorka	1/K1	4/K2	prava_svorka	2/A1	3/A2	koniec_svoriek	END
+D_diody NOVE	lava_svorka	53	1	2	prava_svorka	51	3	4	koniec_svoriek	END
+I_xx_PL7+ZP-ASA230	lava_svorka	2	4	6	21	22	24	2	prava_svorka	1	3	5	11	12	13	14	1	koniec_svoriek	END
+R_NES_MIO200-110	lava_svorka	A	B	C	D	E	F	prava_svorka	G	H	J	+	L	-	PE	koniec_svoriek	END
+P_Metra_MTU_011	lava_svorka	1	2	3	4	5	6	7	8	prava_svorka	9	10	11	12	13	14	15	16	koniec_svoriek	END
+R_NES_NZ2/2 OPACNE	lava_svorka	M	L	prava_svorka	D	F	koniec_svoriek	END
+R_Rawet_GXN230	lava_svorka	1	3	2	prava_svorka	4	5	6	7	koniec_svoriek	END
+T_SCHNEIDER	lava_svorka	2	4	6	8	prava_svorka	1	3	5	7	koniec_svoriek	END
+T_LiV_dvojtlacitko	lava_svorka	3/2	4/2	2	4	X2	-	prava_svorka	3/1	4/1	1	3	X1	koniec_svoriek	END
+S_Schneider_LC	lava_svorka	A2	2	4	6	14	22	54	62	64	prava_svorka	A1	1	3	5	13	21	53	61	63	koniec_svoriek	END		
+O_Siemens_LOGO1	lava_svorka	Q1.1	Q1.2	Q2.1	Q2.2	Q3.1	Q3.2	Q4.1	Q4.2	Q5.1	Q5.2	Q6.1	Q6.2	Q7.1	Q7.2	Q8.1	Q8.2	prava_svorka	L1	N	I1	I2	I3	I4	I5	I6	I7	I8	koniec_svoriek	END
+R_Elko_CRM01	lava_svorka	15	16	18	prava_svorka	A1	A2	koniec_svoriek	END
+R_Elko_HRN-43N	lava_svorka	25	26	28	18	15	16	prava_svorka	A1	A2	N	L1	L2	L3	koniec_svoriek	END
+T_MOELLER	lava_svorka	4	14	12	2	22	24	18	34	32	44	X2	prava_svorka	3	13	11	1	21	23	15	33	31	43	X1	koniec_svoriek	END		
+T_MOELLER_R	lava_svorka	4	14	12	1	22	24	18	34	32	44	X2	prava_svorka	3	13	11	2	21	23	15	33	31	43	X1	koniec_svoriek	END		
+D_Diody_1N4007	lava_svorka	2	4	6	8	10	12	14	16	prava_svorka	1	3	5	7	9	11	13	15	koniec_svoriek	END	
+R_ETR4-70-A	lava_svorka	18	16	26	28	X1	A2	prava_svorka	15	25	B1	Z1	Z2	A1	koniec_svoriek	END	
+R_Siem_3RH1440-1BM40	lava_svorka	A2	14	24	34	44	54	64	74	82	84	E2	prava_svorka	A1	13	23	33	43	53	63	73	81	83	E1	koniec_svoriek	END
+Od_Odpory 	lava_svorka	2	4	6	8	10	12	14	16	18	20	22	24	26	prava_svorka	1	3	5	7	9	11	13	15	17	19	21	23	25	koniec_svoriek	END		
+TR_TAC 	lava_svorka	1A	5A	P1	P2	P3	prava_svorka	S	S1	S2	S3	koniec_svoriek	END
+R_Siem_3RH1122-1BM40	lava_svorka	A2	14	22	32	44	54	62	72	84	prava_svorka	A1	13	21	31	43	53	61	71	83	koniec_svoriek	END
+R_Siem_3RH1131-1BB40	lava_svorka	A2	14	22	32	44	52	62	prava_svorka	A1	13	21	31	43	51	61	koniec_svoriek	END
+R_Siem_3RH1140-1BM40	lava_svorka	A2	14	24	34	44	54	62	64	72	74	84	prava_svorka	A1	13	23	33	43	53	61	63	71	73	83	koniec_svoriek	END
+R_Siem_3TX7002-1BB00	lava_svorka	A2	12	14	prava_svorka	A1	11	koniec_svoriek	END
+R_Siem_3TX7*-2AB00	lava_svorka	A1	A2	prava_svorka	13	14	koniec_svoriek	END
+R_Siem_3RH1422-1BM40	lava_svorka	A2	14	22	32	44	54	62	72	84	E2	prava_svorka	A1	13	21	31	43	53	61	71	83	E1	koniec_svoriek	END		
+S_Schneider_C60+OF	lava_svorka	2	4	6	12	14	92	94	82	84	prava_svorka	1	3	5	11	91	81	koniec_svoriek	END	
+P_Metra_MTI_114	lava_svorka	1	2	3	4	prava_svorka	5	6	7	8	koniec_svoriek	END	
+P_Selinc_Sel2505	lava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	Tx	Rx	prava_svorka	25	26	27	28	29	30	31	32	33	34	35	36	37	38	39	40	41	42	43	44	45	46	47	48	koniec_svoriek	END	
+SAT_SAT_TM1703	lava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	prava_svorka	21	22	23	24	25	26	27	28	29	30	31	32	33	34	35	36	37	38	39	40	koniec_svoriek	END
+SV_XV16-21	lava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	prava_svorka	21	22	23	24	25	26	27	28	29	30	31	32	33	34	35	36	37	38	39	40	41	42	43	44	45	46	47	48	49	51	52	53	54	55	56	57	58	59	60	61	62	63	64	65	66	67	68	69	70	koniec_svoriek	END
+P_Metra_MTU_111	lava_svorka	1	2	3	4	prava_svorka	5	6	7	8	koniec_svoriek	END
+P_Metra_MTU_112	lava_svorka	1	2	3	4	prava_svorka	5	6	7	8	koniec_svoriek	END
+P_Metra_MTU_115	lava_svorka	1	2	3	4	prava_svorka	5	6	7	8	koniec_svoriek	END
+P_Metra_MTI_115	lava_svorka	1	2	3	4	prava_svorka	5	6	7	8	koniec_svoriek	END
+B_Metra_BR A	lava_svorka	vsetky	prava_svorka	koniec_svoriek	END
+Sv_X01_22kV_Dom	lava_svorka	11	12	13	14	15	16	21	22	23	24	25	26	31	32	33	34	35	36	41	42	43	44	45	46	prava_svorka	51	52	53	54	55	56	61	62	63	64	65	66	71	72	73	74	75	76	koniec_svoriek	END
+ZvPr_Saltek_FLP-A35_09	lava_svorka	PE	prava_svorka	L	koniec_svoriek	END
+PO_OEZ_FH2-3A/F	lava_svorka	U2	V2	W2	1	prava_svorka	U1	V1	W1	2	4	koniec_svoriek	END
+O_OEZ_OPV10/3	lava_svorka	U2	V2	W2	prava_svorka	U1	V1	W1	koniec_svoriek	END
+R_A&B_813S-V3-400V	lava_svorka	16	18	15	26	28	25	prava_svorka	N	L1	L2	L3	koniec_svoriek	END
+R_A&B_700-HA33Z1-3	lava_svorka	A1	A2	11	21	31	41	prava_svorka	12	14	22	24	32	34	42	44	koniec_svoriek	END
+R_700HA33-OPACNE	lava_svorka	12	14	22	24	32	34	42	44	prava_svorka	A1	A2	11	21	31	41	koniec_svoriek	END
+I_Moeller_PLHT_Z-LHK	lava_svorka	2	4	6	N	14	22	prava_svorka	1	3	5	N	13	21	koniec_svoriek	END
+I_OEZ_LSN	lava_svorka	2	4	6	12	24	34	prava_svorka	1	3	5	11	23	33	koniec_svoriek	END
+H_Hivus	lava_svorka	vsetky	prava_svorka	koniec_svoriek	END
+T_Stego-ETF012	lava_svorka	vsetky	prava_svorka	koniec_svoriek	END	
+R_MOEL_Z-ZRER/W	lava_svorka	A2	A3	16	18	prava_svorka	A1	B1	15	koniec_svoriek	END
+R_MOEL_EMR4-I	lava_svorka	A2	C	16	18	26	28	14	12	24	22	prava_svorka	A1	B1	B2	B3	15	25	11	21	koniec_svoriek	END
+PrCh_MOELLER_PF7	lava_svorka	2	4	6	N	12	14	22	24	prava_svorka	1	3	5	N	11	21	koniec_svoriek	END
+R_ABB-RXMS1	lava_svorka	prava_svorka	vsetky	koniec_svoriek	END
+PO_OEZ_FH00-3s/F	lava_svorka	U2	V2	W2	1	2	3	c	prava_svorka	U1	V1	W1	4	7	5	8	6	9	NO	NC	koniec_svoriek	END
+O_Siemens_LOGO2	lava_svorka	Q1/1	Q1/2	Q2/1	Q2/2	Q3/1	Q3/2	Q4/1	Q4/2	Q5/1	Q5/2	Q6/1	Q6/2	Q7/1	Q7/2	Q8/1	Q8/2	prava_svorka	PS/L	PS/N	I/1	I/2	I/3	I/4	I/5	I/6	I/7	I/8	koniec_svoriek	END
+MZ_HATHAWAY_BCM200E	lava_svorka	P1/1	P1/2	P1/3	P1/4	P1/5	P1/6	P1/7	P1/8	P1/9	P1/10	P1/11	P1/12	P4/13	P4/14	P4/15	P4/16	P4/17	P4/18	P4/19	P4/20	prava_svorka	P2/21	P2/22	P2/23	P2/24	P2/25	P2/26	P2/27	P2/28	P2/29	P2/30	P2/31	P2/32	P3/33	P3/34	P3/35	P3/36	P3/37	P3/38	P3/39	P3/40	P3/41	P3/42	P3/43	P3/44	P6/1	P6/2	P6/3	P6/4	P6/5	P6/6	P6/7	P6/8	P6/9	P6/10	P6/11	P6/12	P6/13	P6/14	P6/15	P7/16	P7/17	P7/18	P7/19	P7/20	P7/21	P7/22	P7/23	P7/24	P7/25	P7/26	koniec_svoriek	END
+PO_OEZ_FH2-3S/F	lava_svorka	U2	V2	W2	1	2	3	C	prava_svorka	U1	V1	W1	4	7	5	8	6	9	NO	NC	koniec_svoriek	END
+O_Siemens_LOGO3	lava_svorka	Q1/1	Q1/2	Q2/1	Q2/2	Q3/1	Q3/2	Q4/1	Q4/2	Q5/1	Q5/2	Q6/1	Q6/2	Q7/1	Q7/2	Q8/1	Q8/2	prava_svorka	L1	N	I1	I2	I3	I4	I5	I6	I7	I8	koniec_svoriek	END
+S_LSD6115F	lava_svorka	2T1	4T2	6T3	14	22	44	32	2	4	6	prava_svorka	A1	A2	1L1	3L2	5L3	13	21	31	43	1	3	5	koniec_svoriek	END
+S_MOELLER_DILM	lava_svorka	A2	2T1	4T2	6T3	14	22	64	62	2	4	6	prava_svorka	A1	1L1	3L2	5L3	13	21	53	61	1	3	5	koniec_svoriek	END
+P_M&T_OSC-120UC	lava_svorka	13	14	12	prava_svorka	A1	A2	koniec_svoriek	END
+R_ABB_SPER_1B1	lava_svorka	34	9	A2	10	31	11	1	A1	2	14	3	prava_svorka	32	8	24	7	21	6	22	5	14	4	koniec_svoriek	END
+R_A&B_700DC-M400	lava_svorka	A2	14	22	24	32	34	44	54	62	72	84	prava_svorka	A1	13	21	23	31	33	43	53	61	71	83	koniec_svoriek	END
+I_Moel_PL7-AHK-LSN	lava_svorka	2	4	6	11	12	21	22	prava_svorka	1	3	5	koniec_svoriek	END	
+T_ELECCO	lava_svorka	3	prava_svorka	1	2	koniec_svoriek	END
+P_TELEMECA	lava_svorka	2	22	23	24	prava_svorka	1	12	13	14	koniec_svoriek	END
+ZP_KIWA_NR	lava_svorka	3	6	4	T	prava_svorka	1	5	2	T	koniec_svoriek	END
+R_DOHNALEK	lava_svorka	1	2	3	4	5	6	7	8	9	10	N	prava_svorka	12	13	14	15	16	17	18	19	20	21	22	koniec_svoriek	END
+P_GMC_I552	lava_svorka	1	2	3	4	5	6	7	8	9	prava_svorka	10	11	12	13	koniec_svoriek	END
+MP_V604		lava_svorka	3	4	5	8	9	10	13	14	15	prava_svorka	1	2	6	7	11	12	koniec_svoriek	END
+T_OZE_dvojtlacitko	lava_svorka	4	2	6	8	prava_svorka	3	1	5	7	koniec_svoriek	END
+R-RYo		lava_svorka	25	26	27	28	29	30	31	32	33	34	35	36	37	38	39	40	41	42	prava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	koniec_svoriek	END
+P-EGU-M3P	lava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	prava_svorka	24	25	26	27	28	29	30	31	32	33	34	35	36	37	38	39	40	41	42	koniec_svoriek	END
+Z_MOEL.SPB+C/3	lava_svorka	PE	prava_svorka	L1	L2	L3	N	koniec_svoriek	END
+Z_MOEL.-SPB/12	lava_svorka	PE	prava_svorka	L	N	koniec_svoriek	END
+R_BENDER_420	lava_svorka	T/R1	A1	A2	K	L	prava_svorka	T/R2	11	12	14	21	22	24	koniec_svoriek	END
+R_NES_MIO2000	lava_svorka	A	B	C	D	E	F	prava_svorka	G	H	J	K	L	M	PE	koniec_svoriek	END
+O_OSRAM	lava_svorka	L	prava_svorka	N	koniec_svoriek	END
+P_RAWET		lava_svorka	1	2	3	prava_svorka	4	5	6	7	koniec_svoriek	END
+ZvPr_Saltek_DM-D	lava_svorka	A	B	C	D	PE	prava_svorka	E	F	G	H	koniec_svoriek	END
+I_ICxxN_IOF	lava_svorka	N	2	4	6	11/1	11/2	11/3	12/1	12/2	12/3	14/1	14/2	14/3	11	12	14	prava_svorka	N	1	3	5	koniec_svoriek	END
+I_ICxxN_OF+SD	lava_svorka	N	2	4	6	91/1	91/2	91/3	92/1	92/2	92/3	94/1	94/2	94/3	91	92	94	prava_svorka	N	1	3	5	11/1	11/2	11/3	12/1	12/2	12/3	14/1	14/2	14/3	11	12	14	koniec_svoriek	END
+I_Schneid_C60N+iOF	lava_svorka	N	2	4	6	8	91/1	91/2	91/3	92/1	92/2	92/3	94/1	94/2	94/3	12	14	11	prava_svorka	N	1	3	5	7	11/1	11/2	11/3	12/1	12/2	12/3	14/1	14/2	14/3	koniec_svoriek	END
+I_Schneid_C32HDC	lava_svorka	N	2	4	6	12	14	91/1	91/2	91/3	92/1	92/2	92/3	94/1	94/2	94/3	prava_svorka	N	1	3	5	11	C1	C2	D1	D2	11/1	11/2	11/3	12/1	12/2	12/3	14/1	14/2	14/3	koniec_svoriek	END
+P_prepinac_ABB	lava_svorka	21	23	prava_svorka	11	13	koniec_svoriek	END
+P_BCD_KODER	lava_svorka	A	B	C	D	XA	XB	31	32	33	34	M1	M2	prava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	koniec_svoriek	END
+P_DATATHERM_DT	lava_svorka	11	12	13	14	15	16	17	18	19	20	prava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	koniec_svoriek	END
+R_ZPA_RP_47D	lava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	prava_svorka	13	14	15	16	17	18	19	20	21	22	23	24	koniec_svoriek	END
+R_BENDER_421	lava_svorka	11	12	14	21	22	24	prava_svorka	L1	L2	L3	N	koniec_svoriek	END
+R_BENDER_VMD421	lava_svorka	11	12	14	21	22	24	prava_svorka	L1	L2	L3	N	koniec_svoriek	END
+R_EL_VS316/230	lava_svorka	A1	A2	21	22	24	prava_svorka	11	12	14	31	32	34	koniec_svoriek	END
+S_EP PISEK C9	lava_svorka	A2	2	4	6	04	16	24	34	42	prava_svorka	A1	1	3	5	03	15	23	33	41	koniec_svoriek	END
+P_WEIGEL VUD2.2	lava_svorka	17	2	5	16	prava_svorka	20	19	koniec_svoriek	END
+P_WIPRO I19ZB	lava_svorka	1A	2A	3A	4A	5A	6A	7A	8A	9A	10A	11A	12A	13A	14A	15A	16A	17A	18A	19A	prava_svorka	1B	2B	3B	4B	5B	6B	7B	8B	9B	10B	11B	12B	13B	14B	15B	16B	17B	18B	19B	koniec_svoriek	END
+P_WEIGEL AUE2.2	lava_svorka	17	1	3	16	prava_svorka	20	19	koniec_svoriek	END
+I_SCHRACK BMS0	lava_svorka	1	N	14	22	prava_svorka	2	N	13	21	koniec_svoriek	END
+SV_X103 svorka	lava_svorka	46	47	48	49	50	51	52	53	54	55	56	57	58	59	60	61	62	63	64	65	prava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31	32	33	34	35	35	36	37	38	39	40	41	42	43	44	45	koniec_svoriek	END
+D_diody DU402 	lava_svorka	4	1	prava_svorka	3	2	koniec_svoriek	END
+R_SCHNE_RUMC3AB2ND	lava_svorka	A2	31	21	11	A1	prava_svorka	34	32	24	22	14	12	koniec_svoriek	END
+M_MEg 35/G	lava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	USB	prava_svorka	20	21	22	23	24	25	26	27	28	29	30	31	32	33	34	35	36	37	38	koniec_svoriek	END
+M_MEg 201	lava_svorka	vsetky	prava_svorka	koniec_svoriek	END
+M_MEg 101a	lava_svorka	vsetky	prava_svorka	koniec_svoriek	END
+T_Schneider_xb5	lava_svorka	1.1	1.2	3.3	1.4	prava_svorka	2.1	2.2	4.3	2.4	koniec_svoriek	END
+I_Siemens	lava_svorka	2	4	6	11	23	N	prava_svorka	1	3	5	12	24	koniec_svoriek	END
+R_Siem3RP15051A	lava_svorka	16	18	A2	prava_svorka	15	B1	A1	koniec_svoriek	END
+R_Siem3RP15051B	lava_svorka	16	18	A2	22	26	24	28	prava_svorka	15	B1	A1	21	25	17	koniec_svoriek	END
+I_siem3RV1011-1	lava_svorka	2	4	6	34	42	prava_svorka	1	3	5	33	41	koniec_svoriek	END
+R_Chrack BZ3264	lava_svorka	L	N	prava_svorka	1	2	3	koniec_svoriek	END
+S_Siem3RT1015-1	lava_svorka	2	4	6	A2	14	22	32	44	54	prava_svorka	1	3	5	A1	13	21	31	43	53	koniec_svoriek	END
+ZvPr_Saltek_DM_024_V/1_R1	lava_svorka	2	4	6	10	a2	G2	b2	prava_svorka	1	3	5	9	a1	b1	PE	G1	koniec_svoriek	END
+R_FINDER_56.34.9.110.0040	lava_svorka	A2	A1	11	21	31	41	prava_svorka	12	14	22	24	32	34	42	44	koniec_svoriek	END
+R_Siem3RQ3052	lava_svorka	13	14	12	11	prava_svorka	A1	A2	koniec_svoriek	END
+R_PHOENIX_EMD	lava_svorka	A1	GND	15	I1	I2	I3	prava_svorka	25	26	28	16	18	A2	koniec_svoriek	END
+R_Opaè 3RQ3052	lava_svorka	A1	A2	prava_svorka	13	14	12	11	koniec_svoriek	END
+R_Opaè	lava_svorka	A1	13	21	33	43	prava_svorka	A2	14	22	34	44	koniec_svoriek	END
+ZvPr_Sal_DM-024/1RS	lava_svorka	SH	A1	B1	PE	prava_svorka	SH	A2	B2	koniec_svoriek	END
+Z_NEZ_DUB_NZ-1-24/110	lava_svorka	A	B	C	D	E	F	prava_svorka	G	H	J	K	L	M	koniec_svoriek	END
+I_SIEM_5SY5202	lava_svorka	2	4	6	12	14	22	24	prava_svorka	1	3	5	11	13	21	23	koniec_svoriek	END
+S_spinac	lava_svorka	14	24	12	22	prava_svorka	13	23	11	21	koniec_svoriek	END
+I_Schneider NT10 H1	lava_svorka	L	prava_svorka	11	12	14	PE	koniec_svoriek	END
+S_Schrack	lava_svorka	A2	2	4	6	8	12	22	24	prava_svorka	A1	1	3	5	7	11	21	23	koniec_svoriek	END
+PO_OEZ_FH00-3B/T	lava_svorka	U2	V2	W2	1	3	5	c	prava_svorka	U1	V1	W1	2	4	6	7	14	8	15	6	16	9	NO	NC	koniec_svoriek	END
+I_Schneid_C60H+SD+OF	lava_svorka	N	L	2	4	6	8	21/91	22/94	24/92	91	94	92	21	22	24	prava_svorka	N	1	3	5	7	11	12	14	koniec_svoriek	END
+I_Schneider A9N26924	lava_svorka	N	L	2	4	6	8	11	12	14	21	22	24	prava_svorka	N	1	3	5	7	koniec_svoriek	END
+R_BENDER_VMD420	lava_svorka	11	12	14	21	22	24	prava_svorka	L1	L2	L3	N	A1	A2	koniec_svoriek	END
+P_CB sineax V624	lava_svorka	7	8	9	10	11	12	prava_svorka	1	2	3	4	5	6	koniec_svoriek	END
+Z_TracoPower_TMT15124C	lava_svorka	+Vo	N/C	-Vo	3	4	5	prava_svorka	AC	1	2	koniec_svoriek	END
+COMERGON_DIN7.1/485	lava_svorka	TxD	RxD	GND1	IN/1	IN/2	prava_svorka	TX+	TX-	RX+	RX-	GND2	koniec_svoriek	END
+P_CB_SINEAX N563	lava_svorka	1	2	3	4	5	6	7	8	9	10	11	12	13	14	prava_svorka	15	16	17	18	19	20	koniec_svoriek	END
+R_Arteche_FN-DE	lava_svorka	A1	+	-	1	2	3	4	5	6	prava_svorka	7	8	9	10	11	12	13	14	koniec_svoriek	END
+P_CB_SINEAX_CAM	lava_svorka	21	22	23	31	32	33	1	3	4	6	7	9	10	12	2	5	8	11	13	14	prava_svorka	41	42	43	44	51	52	53	54	61	62	63	64	71	72	73	74	koniec_svoriek	END
+P_CB_SINEAX_U539	lava_svorka	1	2	3	4	prava_svorka	5	6	koniec_svoriek	END
+R_PHOENIX_RIF	lava_svorka	A1	A2	prava_svorka	11	12	14	koniec_svoriek	END
+D_ABB_DU402	lava_svorka	1	2	prava_svorka	3	4	koniec_svoriek	END
+S_SE_LC1	lava_svorka	2	4	R2	R4	14	22	A2	prava_svorka	1	3	R1	R3	13	21	A1	koniec_svoriek	END
+R_SE_RXZE	lava_svorka	A1	A2	13	14	prava_svorka	1	4	5	8	9	11	12	14	41	42	44	koniec_svoriek	END
+S_SHRACK_R25-31	lava_svorka	2	4	6	R8	22	A2	prava_svorka	1	3	5	R7	21	A1	koniec_svoriek	END
+Z_SHRACK_REG-SD	lava_svorka	L	N	prava_svorka	PE	koniec_svoriek	END
+R_WM-TRS60VDC	lava_svorka	A1	A2	prava_svorka	12	11	14	koniec_svoriek	END

@@ -1,0 +1,95 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run",
+            "type": "shell",
+            "command": "C:/tools/lua-5.2/bin/lua.exe",
+            "args": [
+                "${file}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.2/?.lua;lua_modules/share/lua/5.2/?/init.lua",
+                    "LUA_CPATH": "lua_modules/lib/lua/5.2/?.dll"
+                }
+            },
+            "problemMatcher": []
+        }, {
+            "label": "Debug",
+            "type": "shell",
+            "command": "START",
+            "isBackground": false,
+            "args": [
+                "Debug: ${file}",
+                "/D", "${workspaceFolder}",
+                "C:/tools/lua-5.2/bin/lua.exe",
+                "src/dbglaunch.lua",
+                "${file}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.2/?.lua;lua_modules/share/lua/5.2/?/init.lua",
+                    "LUA_CPATH": "lua_modules/lib/lua/5.2/?.dll",
+                    "LUA_DEBUGGER_EMMY": "32"
+                }
+            },
+            "problemMatcher": []
+        },{
+            "label": "Debug livstd",
+            "type": "shell",
+            "command": "START",
+            "runOptions": {
+                "instanceLimit": 1
+            },
+            "promptOnClose": true,
+            "args": [
+                "Debug: livstd",
+                "/D", "${workspaceFolder}",
+                "C:/tools/lua-5.2/bin/lua.exe",
+                "src/dbglaunch.lua",
+                "src/liv/std.lua"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.2/?.lua;lua_modules/share/lua/5.2/?/init.lua",
+                    "LUA_CPATH": "lua_modules/lib/lua/5.2/?.dll",
+                    "LUA_DEBUGGER_EMMY": "32"
+                }
+            },
+        },{
+            "label": "Dbg-cemu",
+            "type": "process",
+            "command": "C:/Program Files/ConEmu/ConEmu/ConEmuC.exe",
+            "runOptions": {
+                "instanceLimit": 1,
+
+            },
+            "promptOnClose": true,
+            "args": [
+                "-ATTACH",
+                "-ROOT",
+                "lua.exe",
+                "Lua debug Enviroment",
+                "C:/tools/lua-5.2/bin/lua.exe",
+                "-e",
+                "dofile([[src/dbglaunch.lua]])",
+                "src/genKable.lua"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.2/?.lua;lua_modules/share/lua/5.2/?/init.lua",
+                    "LUA_CPATH": "lua_modules/lib/lua/5.2/?.dll",
+                    "LUA_DEBUGGER_EMMY": "32"
+                }
+            },
+            "problemMatcher": []
+        }
+    ]
+}
