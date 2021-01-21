@@ -1,15 +1,10 @@
-local ftcsv = require("ftcsv")
+local chcp = require("liv.import.charset")
 
-local csvp = {
-  proto = {},
-  _proto = {}
-}
+local csvreader = {}
 
-csvp.required_headers = {
+csvreader.required_headers = {
   ["gan"] = {
-    "PŘÍSTROJ =", "PŘÍSTROJ +", "PŘÍSTROJ -", "PŘÍSTROJ -1", "PŘÍSTROJ -AN", "PŘÍSTROJ :1",
-    "PRŮŘEZ",
-    "CÍL =", "CÍL +", "CÍL -", "CÍL -1", "CÍL -AN", "CÍL :1"
+    "PŘÍSTROJ =", "PŘÍSTROJ +", "PŘÍSTROJ -", "PŘÍSTROJ -1", "PŘÍSTROJ -AN", "PŘÍSTROJ :1", "PRŮŘEZ", "CÍL =", "CÍL +", "CÍL -", "CÍL -1", "CÍL -AN", "CÍL :1"
   }
 }
 
@@ -30,33 +25,47 @@ local function containsall(t, what)
   return true
 end
 
-function csvp.parse(header, lines, csvtype)
-  if not csvtype then
-    for k, v in pairs(csvp.required_headers) do
-      if containsall(header, v) then
-        csvtype = k
-        break
-      end
-    end
-
-    if not csvtype then
-      error("Nepoznam typ csv.")
+function csvreader.gettype(header)
+  for k, v in pairs(csvreader.required_headers) do
+    if containsall(header, v) then
+      return k
     end
   end
+  return nil
+end
 
+function csvreader.parse(header, lines)
+  local csvtype = csvreader.gettype(header)
+  if not csvtype then error("Unkown type") end
   local parse = require("liv.import.csv." .. csvtype)
 
   return parse(header, lines)
 end
 
-function csvp.proto:line()
-  local status, l = coroutine.resume(self.reader)
-  return l
+local function trim(s)
+  return s:match'^%s*(.*%S)' or ''
 end
 
-function csvp.proto:parse(line)
+function csvreader.read(path)
+  local head = nil
+  local lns = {}
 
+  for l in io.lines(path) do
+    l = chcp(l, "CP1250")
+
+    local tkns = {}
+    for tkn in l:gmatch("%s*([^;]+)%s*;") do
+      table.insert(tkns, trim(tkn))
+    end
+
+    if not head then
+      head = tkns
+    else
+      table.insert(lns, tkns)
+    end
+  end
+
+  return csvreader.parse(head, lns)
 end
 
-
-return csvp
+return csvreader

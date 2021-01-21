@@ -1,58 +1,23 @@
-local chcp = require("liv.import.charset")
+local csvreader = require("liv.import.csv")
 
 local _import = {}
 local import = setmetatable({}, _import)
 
-local function guesstype(firstline)
-  -- body
+local function getext(path)
+  local rev = path:reverse()
+  local dotpos = rev:find("%.")
+  return path:sub(#path - dotpos + 2, #path):lower()
 end
 
-local function trim(s)
-  return s:match'^%s*(.*%S)' or ''
-end
 
-local function _coread(hndl,type)
-  while true do
-    local line = hndl:read("*l")
-    line = iconv.convert(line, "CP1250")
-
-    if not type then
-      type = guesstype("")
-    end
-  end
-end
-
-local gan = require("liv.import.csv.gan")
-local csvP = require("liv.import.csv")
 function _import.__call(t, path, type)
-  local count = 1
-  local head = nil
-  local lns = {}
+  local _ext = getext(path)
 
-  for l in io.lines(path) do
-    l = chcp(l, "CP1250")
-
-    local tkns = {}
-    for tkn in l:gmatch("%s*([^;]+)%s*;") do
-      table.insert(tkns, trim(tkn))
-    end
-
-    if not head then
-      head = tkns
-    else
-      table.insert(lns, tkns)
-    end
-    count = count + 1
-    if count == 101 then
-      break
-    end
+  if _ext == "csv" then
+    return csvreader.read(path)
+  else
+    error("Nemozno importovat: Neznamy subor: " .. path)
   end
-
-  print("READ DONE")
-  csvP.parse(head, lns)
 end
-
-
-import("C:/Users/oresany/Desktop/WTEMP/vcs/2021-01-21-sucany/kable-6-7/GAN_SUCA_6_7.CSV")
 
 return import

@@ -28,11 +28,6 @@ local map = swapkv({
 })
 
 return function(head, lines)
-  if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
-    dbg = require("lldebugger")
-    dbg.start(false)
-  end
-
   local lmap = {}
 
   for k, v in pairs(map) do
@@ -54,7 +49,6 @@ return function(head, lines)
   }
 
   local data = {}
-  local indexed = {}
   local cur = {}
   local lastPr = "-"
   for ln = 1, #lines do
@@ -104,35 +98,30 @@ return function(head, lines)
       end
     end
 
-  if #l.cpole == 0 then
-    l.cpole = pole
-  end
+    if #l.cpole == 0 then
+      l.cpole = pole
+    end
 
-  if #l.cskrina == 0 then
-    l.cskrina = skr
-  end
+    if #l.cskrina == 0 then
+      l.cskrina = skr
+    end
 
-  if ldata.prierez == '"' then
-    ldata.prierez = lastPr
-  else
-    lastPr = #ldata.prierez == 0 and "-" or ldata.prierez
-  end
+    if ldata.prierez:byte() == 34 then
+      ldata.prierez = lastPr
+    else
+      lastPr = #ldata.prierez == 0 and "-" or ldata.prierez
+    end
 
 
     if #l.csvorka > 0 then
       local tu = adresa(pole, skr, pri, l.svorka)
       local prec = adresa(l.cpole, l.cskrina, l.cpristroj, l.csvorka)
 
-      --if not indexed[tu:text()] and not indexed[prec:text()] then
-        table.insert(pr, ldata)
-      --  rawset(indexed, tu:text(), true)
-      --  rawset(indexed, prec:text(), true)
-      --end
-
+      table.insert(pr, ldata)
     else
       lastPr = "-"
     end
   end
 
-  require("liv.gen.banany.skrina").generuj(data.ADA06.ASD06)
+  return data
 end
