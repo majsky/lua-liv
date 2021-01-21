@@ -1,11 +1,17 @@
-local utf8 = require("lua-utf8")
+local utf8 = require("utf8")
 
-local iconv = {
-  CP1250 = require("liv.import.charset.cp1250")
+local charset = {
+  charsets = {
+    CP1250 = require("liv.import.charset.cp1250")
+  }
 }
 
-local function convert(what, from)
-  local cp = iconv[from]
+
+function charset.convert(what, from)
+  if not what then
+    return nil
+  end
+  local cp = charset.charsets[from]
 
   local done = {}
   for i=1, #what do
@@ -16,4 +22,8 @@ local function convert(what, from)
   return table.concat(done)
 end
 
-return convert
+function charset.wrap(stream, charset)
+  
+end
+
+return charset

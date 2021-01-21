@@ -1,6 +1,12 @@
+local buffstr = require("liv.import.bufferedstream")
 local chcp = require("liv.import.charset")
+local convstr = require("liv.import.charset.stream")
 
-local csvreader = {}
+local csvreader = {
+  types = {
+    gan = require("liv.import.csv.gan")
+  }
+}
 
 csvreader.required_headers = {
   ["gan"] = {
@@ -36,10 +42,11 @@ end
 
 function csvreader.parse(header, lines)
   local csvtype = csvreader.gettype(header)
-  if not csvtype then error("Unkown type") end
-  local parse = require("liv.import.csv." .. csvtype)
+  if not csvtype or not csvreader.types[csvtype] then
+    error("Unkown type")
+  end
 
-  return parse(header, lines)
+  return csvreader.types[csvtype](header, lines)
 end
 
 local function trim(s)
@@ -47,25 +54,34 @@ local function trim(s)
 end
 
 function csvreader.read(path)
-  local head = nil
-  local lns = {}
+  local fh = io.open(path, "r")
+  local br = buffstr.new(fh)
+  local cs = convstr.new(br, "CP1250")
+  local head = csvreader.tokenize(cs:read("*l"))
+  local line = cs:read("*l")
+  local tkns = {}
+  repeat
+    local ltkns = csvreader.tokenize(line)
+    table.insert(tkns, ltkns)
+    line = cs:read("*l")
+  until not line
+  cs.base.base:close()
 
-  for l in io.lines(path) do
-    l = chcp(l, "CP1250")
+  return csvreader.parse(head, tkns)
+end
 
-    local tkns = {}
-    for tkn in l:gmatch("%s*([^;]+)%s*;") do
-      table.insert(tkns, trim(tkn))
-    end
+function csvreader.tokenize(str)
+  local tkns = {}
 
-    if not head then
-      head = tkns
-    else
-      table.insert(lns, tkns)
-    end
+  if not str then
+    return tkns
+  end
+  
+  for tkn in str:gmatch("%s*([^;]+)%s*;") do
+    table.insert(tkns, trim(tkn))
   end
 
-  return csvreader.parse(head, lns)
+  return tkns
 end
 
 return csvreader
