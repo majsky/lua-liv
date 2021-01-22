@@ -4,13 +4,7 @@ local addr = { _proto = {}}
 local _addr = {__index=addr._proto}
 
 local function rmprefix(str)
-  if not str then
-    return ""
-  end
-  if str:match("[=%+-].+") then
-    return str:sub(2, #str)
-  end
-  return str
+  return str and str:match("[=%+-]?(.+)") or ""
 end
 
 ---@return Addresa
@@ -46,22 +40,23 @@ end
 ---@return string Text adresy
 function addr._proto:text()
   local b = {}
+
+  if #self.pole > 0 then
+    table.insert(b, "=")
+    table.insert(b, self.pole)
+  end
+
+  if #self.skrina > 0 then
+    table.insert(b, "+")
+    table.insert(b, self.skrina)
+  end
+
+  if #self.pristroj > 0 then
+    table.insert(b, "-")
+    table.insert(b, self.pristroj)
+  end
+
   if #self.svorka > 0 then
-    if #self.pristroj > 0 then
-      if #self.skrina > 0 then
-        if #self.pole > 0 then
-          table.insert(b, "=")
-          table.insert(b, self.pole)
-        end
-
-        table.insert(b, "+")
-        table.insert(b, self.skrina)
-      end
-
-      table.insert(b, "-")
-      table.insert(b, self.pristroj)
-    end
-
     table.insert(b, ":")
     table.insert(b, self.svorka)
   end

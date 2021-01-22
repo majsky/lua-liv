@@ -1,6 +1,8 @@
 local base64 = require("base64")
 local adresa = require("liv.banany.adresa")
 
+local gan = {}
+
 local function swapkv(t)
   local nt = {}
 
@@ -24,10 +26,11 @@ local map = swapkv({
   ["CÍL -"] = "cpristroj",
   ["CÍL -1"] = "cpristroj2",
   ["CÍL -AN"] = "cpristroj3",
-  ["CÍL :1"] = "csvorka"
+  ["CÍL :1"] = "csvorka",
+  ["POT"] = "potencial"
 })
 
-return function(head, lines)
+function gan.process(head, lines)
   local lmap = {}
 
   for k, v in pairs(map) do
@@ -57,6 +60,7 @@ return function(head, lines)
     local pole = l.pole:sub(2, #l.pole)
     local skr = l.skrina:sub(2, #l.skrina)
     local pri = l.pristroj:sub(2, #l.pristroj)
+    local svorka = l.svorka
 
     l.cpristroj = l.cpristroj:sub(2, #l.cpristroj)
 
@@ -86,7 +90,7 @@ return function(head, lines)
 
     local hasVal = false
     local ldata = {}
-    for _, k in pairs({"pristroj2", "pristroj3", "svorka", "cpristroj", "cpristroj2", "cpristroj3", "csvorka", "prierez", "cpole", "cskrina"}) do
+    for _, k in pairs({"pristroj2", "pristroj3", "svorka", "cpristroj", "cpristroj2", "cpristroj3", "csvorka", "prierez", "cpole", "cskrina", "potencial"}) do
       if l[k]:match("[=%+-].+") then
         ldata[k] = l[k]:sub(2)
       else
@@ -106,22 +110,31 @@ return function(head, lines)
       l.cskrina = skr
     end
 
-    if ldata.prierez:byte() == 34 then
+    if ldata.prierez:byte() == 34 or #ldata.prierez == 0 then
       ldata.prierez = lastPr
     else
+
+      local cele, des = ldata.prierez:match("(%d+),?(%d*)m?m?")
+      if cele then
+        ldata.prierez = cele
+        if #des > 0 then
+          ldata.prierez = ldata.prierez .. "," .. des
+        end
+        ldata.prierez = ldata.prierez .. "mm"
+      end
+
       lastPr = #ldata.prierez == 0 and "-" or ldata.prierez
     end
 
 
-    if #l.csvorka > 0 then
-      local tu = adresa(pole, skr, pri, l.svorka)
-      local prec = adresa(l.cpole, l.cskrina, l.cpristroj, l.csvorka)
-
+    --if #l.csvorka > 0 then
       table.insert(pr, ldata)
-    else
-      lastPr = "-"
-    end
+    --end
   end
 
   return data
 end
+
+gan.headers = {"PŘÍSTROJ =", "PŘÍSTROJ +", "PŘÍSTROJ -", "PŘÍSTROJ -1", "PŘÍSTROJ -AN", "PŘÍSTROJ :1", "PRŮŘEZ", "CÍL =", "CÍL +", "CÍL -", "CÍL -1", "CÍL -AN", "CÍL :1"}
+
+return gan

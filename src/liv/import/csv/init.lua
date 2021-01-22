@@ -4,13 +4,8 @@ local convstr = require("liv.import.charset.stream")
 
 local csvreader = {
   types = {
-    gan = require("liv.import.csv.gan")
-  }
-}
-
-csvreader.required_headers = {
-  ["gan"] = {
-    "PŘÍSTROJ =", "PŘÍSTROJ +", "PŘÍSTROJ -", "PŘÍSTROJ -1", "PŘÍSTROJ -AN", "PŘÍSTROJ :1", "PRŮŘEZ", "CÍL =", "CÍL +", "CÍL -", "CÍL -1", "CÍL -AN", "CÍL :1"
+    gan = require("liv.import.csv.gan"),
+    klo = require("liv.import.csv.klo")
   }
 }
 
@@ -32,11 +27,12 @@ local function containsall(t, what)
 end
 
 function csvreader.gettype(header)
-  for k, v in pairs(csvreader.required_headers) do
-    if containsall(header, v) then
-      return k
+  for type, reader in pairs(csvreader.types) do
+    if containsall(header, reader.headers) then
+      return type
     end
   end
+
   return nil
 end
 
@@ -46,7 +42,7 @@ function csvreader.parse(header, lines)
     error("Unkown type")
   end
 
-  return csvreader.types[csvtype](header, lines)
+  return csvreader.types[csvtype].process(header, lines)
 end
 
 local function trim(s)
@@ -76,7 +72,7 @@ function csvreader.tokenize(str)
   if not str then
     return tkns
   end
-  
+
   for tkn in str:gmatch("%s*([^;]+)%s*;") do
     table.insert(tkns, trim(tkn))
   end

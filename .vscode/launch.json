@@ -1,35 +1,32 @@
 {
   "version": "0.2.0",
-    "configurations": [
-      {
-        "type": "lua-local",
-        "request": "launch",
-        "name": "import",
-        "program": {
-          "lua": "C:/tools/lua-5.2/bin/lua.exe",
-          "file": "src/liv/import/init.lua"
-
-        },
-        "env": {
-          "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.2/?.lua;lua_modules/share/lua/5.2/?/init.lua",
-          "LUA_CPATH": "lua_modules/lib/lua/5.2/?.dll"
-        }
+  "configurations": [
+    {
+      "type": "lua-local",
+      "request": "launch",
+      "name": "import",
+      "program": {
+        "lua": "C:/tools/share/luajit/luajit.exe",
+        "file": "src/main.lua"
       },
-      {
-        "type": "lua-local",
-        "request": "launch",
-        "name": "Cur file",
-        "program": {
-          "lua": "C:/tools/lua-5.2/bin/lua.exe",
-          "file": "${file}"
-
-        },
-        "env": {
-          "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.2/?.lua;lua_modules/share/lua/5.2/?/init.lua",
-          "LUA_CPATH": "lua_modules/lib/lua/5.2/?.dll"
-        }
+      "stopOnEntry": false,
+      "env": {
+        "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.1/?.lua;lua_modules/share/lua/5.1/?/init.lua;C:/tools/share/luajit/lua/?.lua;C:/tools/share/luajit/rocks/systree/share/lua/5.1/?.lua",
+        "LUA_CPATH": "lua_modules/lib/lua/5.1/?.dll;C:/tools/share/luajit/rocks/systree/lib/lua/5.1/?.dll"
+      }
+    },
+    {
+      "type": "lua-local",
+      "request": "launch",
+      "name": "Cur file",
+      "program": {
+        "lua": "C:/tools/share/luajit/luajit.exe",
+        "file": "${file}"
       },
-    
-    ],
-
+      "env": {
+        "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.1/?.lua;lua_modules/share/lua/5.1/?/init.lua;C:/tools/share/luajit/lua/?.lua;C:/tools/share/luajit/rocks/systree/share/lua/5.1/?.lua",
+        "LUA_CPATH": "lua_modules/lib/lua/5.1/?.dll;C:/tools/share/luajit/rocks/systree/lib/lua/5.1/?.dll"
+      }
+    },
+  ],
 }
