@@ -10,7 +10,7 @@ function pop.read(path)
   local name = nil
   local cur = {}
   for l in io.lines(path) do
-    l = conv(l, "CP1250")
+    l = conv.convert(l, "CP1250")
     for tkn in l:gmatch("([^\t]+)") do
       if not name then
         name = tkn
