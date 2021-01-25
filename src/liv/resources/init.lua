@@ -1,7 +1,9 @@
 local d = {}
 
 local _TOKEN = "@FILENAME@"
-local cache = {}
+local cache = {
+  user = {}
+}
 
 function d.getPath(f)
   if cache.user[f] then

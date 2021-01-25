@@ -1,7 +1,8 @@
 local bnn = require("liv.gen.banany")
 local addr = require("liv.banany.adresa")
 local ui = require("liv.ui")
---local dev = require("liv.gen.banany.pristroj")
+local dev = require("liv.gen.pristroje")
+local presist = require("liv.util.presist")
 
 local zap = {proto = {}}
 local _zap = {__index=zap.proto}
@@ -15,7 +16,10 @@ function zap.new(adresa, gan, klo)
     skrina = adresa.skrina,
     data = {},
     pristroje = {},
-    svorkovnice = {}
+    svorkovnice = {},
+    doplnene = {
+      prierezy = {}
+    }
   }
 
   for k, v in pairs(gan[o.pole][o.skrina]) do
@@ -40,10 +44,8 @@ function zap.new(adresa, gan, klo)
   return setmetatable(o, _zap)
 end
 
-function zap.proto:generuj()
-  local banany = {}
-  local index = {}
-  for i, pristroj in ipairs(self.pristroje) do
+local function gen(self, lst, pristroje, banany, index)
+  for i, pristroj in ipairs(lst) do
     local svorky = self.data[pristroj]
     table.sort(svorky, function(a, b)
       local an, bn = tonumber(a.svorka), tonumber(b.svorka)
@@ -56,12 +58,6 @@ function zap.proto:generuj()
 
     for n, svorka in ipairs(svorky) do
       if svorka.obsadena then
-        local smer = svorka.smer
-
-        if not smer then
-          smer = bnn.LAVY
-        end
-
         local k1 = {
           svorka = svorka.svorka,
           pristroj = pristroj
@@ -75,18 +71,47 @@ function zap.proto:generuj()
         local tu = addr.new(nil, nil, pristroj, svorka.svorka)
         local tam = addr.new(nil, nil, svorka.cpristroj, svorka.csvorka)
 
+        local smer = svorka.smer
+
+        if not smer and pristroje then
+          smer = pristroje:nasmeruj(pristroj, svorka)
+        end
+
+        if not smer then
+          smer = ui.actual:prompt("Smer pre ", tu:text(), " chýba, zadaj ho prosím\nsmer [L|P]: ")
+        end
+
+        if not smer then
+          smer = bnn.LAVY
+        end
+
         local h1 = tu:text() .. "->" .. tam:text()
         local h2 = tam:text() .. "->" .. tu:text()
 
         if not index[h1] and not index[h2] then
           local prierez = svorka.prierez
 
-          if not prierez and not os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") then
+          if not prierez then
+            local d = self.dopnene.prierezy[tu:text()]
+            if d then
+              prierez = d
+            end
+          end
+
+          if not prierez then
             prierez = ui.actual:prompt("Prierez pre ", tu:text(), " chýba, zadaj ho prosím\nprierez: ")
+
+            if prierez then
+              self.doplnene.prierezy[tu:text()] = prierez
+            end
           end
 
           if not prierez then
             prierez = "-"
+          else
+            if not prierez:find("mm") then
+              prierez = prierez .. "mm"
+            end
           end
 
           if not banany[prierez] then
@@ -101,6 +126,30 @@ function zap.proto:generuj()
       end
     end
   end
+end
+
+local function copyto(src, dest)
+  if not dest then
+    dest = {}
+  end
+
+  for k, v in pairs(src) do
+    if type(v) == "table" then
+      dest[k] = copyto(v, dest[k])
+    else
+      dest[k] = v
+    end
+  end
+
+  return dest
+end
+function zap.proto:generuj(pristroje)
+  local banany = {}
+  local index = {}
+
+  gen(self, self.pristroje, pristroje, banany, index)
+  gen(self, self.svorkovnice, pristroje, banany, index)
+
 
   return banany
 end
@@ -111,6 +160,16 @@ function zap.proto:banany()
   end
 
   return self.banany
+end
+
+function zap.proto:ulozDoplnene(path)
+  presist.save(self.doplnene, path)
+  return self
+end
+
+function zap.proto:nacitajDoplnenia(path)
+  self.dopnene = presist.load(path)
+  return self
 end
 
 return zap

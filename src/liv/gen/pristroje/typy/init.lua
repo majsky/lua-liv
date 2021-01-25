@@ -23,6 +23,9 @@ function proto.nasmeruj(nazov, svorka, typ)
     return "L"
 end
 
+function proto.definuje()
+    return nil
+end
 
 local function typ(nazov)
     local ch = require("liv.gen.pristroje.typy." .. nazov)

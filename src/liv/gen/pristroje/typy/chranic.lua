@@ -25,7 +25,7 @@ function chranic.nasmeruj(nazov, svorka, typ)
     if svorka.potencial:find(nazov) then
       return "L"
     end
-    return "R"
+    return "P"
   else
     local cs = tonumber(svorka.svorka)
     if cs then
@@ -36,6 +36,10 @@ end
 
 function chranic.jetyp(typ)
     return typ == chranic._NAZOV
+end
+
+function chranic.definuje()
+  return chranic._NAZOV
 end
 
 return chranic

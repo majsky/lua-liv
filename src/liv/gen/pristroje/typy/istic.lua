@@ -63,7 +63,6 @@ function istic.otypuj(nazov, svorky)
   end
 end
 
-
 function istic.najdi(meno, svorky)
   local s = {}
 

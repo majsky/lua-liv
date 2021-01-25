@@ -78,7 +78,8 @@ function klo.process(head, lines)
           csvorka = l.lsvorka,
           cpole = odstranBordel(l.lpole),
           cskrina = odstranBordel(l.lskrina),
-          smer = bnn.LAVY
+          smer = bnn.LAVY,
+          obsadena = true
         }
         store(data, ld, l.pole, l.skrina, l.svorkovnica)
       end
@@ -95,7 +96,8 @@ function klo.process(head, lines)
           csvorka = l.rsvorka,
           cpole = odstranBordel(l.rpole),
           cskrina = odstranBordel(l.rskrina),
-          smer = bnn.PRAVY
+          smer = bnn.PRAVY,
+          obsadena = true
         }
         store(data, ld, l.pole, l.skrina, l.svorkovnica)
       end
