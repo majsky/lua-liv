@@ -57,79 +57,81 @@ function gan.process(head, lines)
   for ln = 1, #lines do
     local l = setmetatable(lines[ln], __linemeta)
 
-    local pole = l.pole:sub(2, #l.pole)
-    local skr = l.skrina:sub(2, #l.skrina)
-    local pri = l.pristroj:sub(2, #l.pristroj)
     local svorka = l.svorka
 
-    l.cpristroj = l.cpristroj:sub(2, #l.cpristroj)
+    if #svorka > 0 then
+      local pole = l.pole:sub(2, #l.pole)
+      local skr = l.skrina:sub(2, #l.skrina)
+      local pri = l.pristroj:sub(2, #l.pristroj)
 
-    if #pole > 0 and #skr > 0 and #pri > 0 then
-      cur.pole = pole
-      cur.skr = skr
-      cur.pri = pri
-    else
-      pole = cur.pole
-      skr =  cur.skr
-      pri =  cur.pri
-    end
+      l.cpristroj = l.cpristroj:sub(2, #l.cpristroj)
 
-    if not data[pole] then
-      data[pole] = {}
-    end
-
-    if not data[pole][skr] then
-      data[pole][skr] = {}
-    end
-
-    if not data[pole][skr][pri] then
-      data[pole][skr][pri] = {}
-    end
-
-    local pr = data[pole][skr][pri]
-
-    local hasVal = false
-    local ldata = {}
-    for _, k in pairs({"pristroj2", "pristroj3", "svorka", "cpristroj", "cpristroj2", "cpristroj3", "csvorka", "prierez", "cpole", "cskrina", "potencial"}) do
-      if l[k]:match("[=%+-].+") then
-        ldata[k] = l[k]:sub(2)
+      if #pole > 0 and #skr > 0 and #pri > 0 then
+        cur.pole = pole
+        cur.skr = skr
+        cur.pri = pri
       else
-        ldata[k] = l[k]
+        pole = cur.pole
+        skr =  cur.skr
+        pri =  cur.pri
       end
 
-      if #l[k] > 0 then
-        hasVal = true
+      if not data[pole] then
+        data[pole] = {}
       end
-    end
 
-    if #l.cpole == 0 then
-      l.cpole = pole
-    end
+      if not data[pole][skr] then
+        data[pole][skr] = {}
+      end
 
-    if #l.cskrina == 0 then
-      l.cskrina = skr
-    end
+      if not data[pole][skr][pri] then
+        data[pole][skr][pri] = {}
+      end
 
-    if ldata.prierez:byte() == 34 or #ldata.prierez == 0 then
-      ldata.prierez = lastPr
-    else
+      local pr = data[pole][skr][pri]
 
-      local cele, des = ldata.prierez:match("(%d+),?(%d*)m?m?")
-      if cele then
-        ldata.prierez = cele
-        if #des > 0 then
-          ldata.prierez = ldata.prierez .. "," .. des
+      local hasVal = false
+      local ldata = {}
+      for _, k in pairs({"pristroj2", "pristroj3", "svorka", "cpristroj", "cpristroj2", "cpristroj3", "csvorka", "prierez", "cpole", "cskrina", "potencial"}) do
+        if l[k]:match("[=%+-].+") then
+          ldata[k] = l[k]:sub(2)
+        else
+          ldata[k] = l[k]
         end
-        ldata.prierez = ldata.prierez .. "mm"
+
+        if #l[k] > 0 then
+          hasVal = true
+        end
       end
 
-      lastPr = #ldata.prierez == 0 and "-" or ldata.prierez
+      if #l.cpole == 0 then
+        l.cpole = pole
+      end
+
+      if #l.cskrina == 0 then
+        l.cskrina = skr
+      end
+
+      if ldata.prierez:byte() == 34 or #ldata.prierez == 0 then
+        ldata.prierez = lastPr
+      else
+
+        local cele, des = ldata.prierez:match("(%d+),?(%d*)m?m?")
+        if cele then
+          ldata.prierez = cele
+          if #des > 0 then
+            ldata.prierez = ldata.prierez .. "," .. des
+          end
+          ldata.prierez = ldata.prierez .. "mm"
+        end
+
+        lastPr = #ldata.prierez == 0 and "-" or ldata.prierez
+      end
+
+      ldata.obsadena = #ldata.csvorka > 0 and #ldata.cpristroj > 0 and #ldata.svorka > 0
+
+        table.insert(pr, ldata)
     end
-
-
-    --if #l.csvorka > 0 then
-      table.insert(pr, ldata)
-    --end
   end
 
   return data

@@ -55,47 +55,49 @@ function zap.proto:generuj()
     end)
 
     for n, svorka in ipairs(svorky) do
-      local smer = svorka.smer
+      if svorka.obsadena then
+        local smer = svorka.smer
 
-      if not smer then
-        smer = bnn.LAVY
-      end
+        if not smer then
+          smer = bnn.LAVY
+        end
 
-      local k1 = {
-        svorka = svorka.svorka,
-        pristroj = pristroj
-      }
+        local k1 = {
+          svorka = svorka.svorka,
+          pristroj = pristroj
+        }
 
-      local k2 =  {
-        svorka = svorka.csvorka,
-        pristroj = svorka.cpristroj
-      }
+        local k2 =  {
+          svorka = svorka.csvorka,
+          pristroj = svorka.cpristroj
+        }
 
         local tu = addr.new(nil, nil, pristroj, svorka.svorka)
         local tam = addr.new(nil, nil, svorka.cpristroj, svorka.csvorka)
 
-      local h1 = tu:text() .. "->" .. tam:text()
-      local h2 = tam:text() .. "->" .. tu:text()
+        local h1 = tu:text() .. "->" .. tam:text()
+        local h2 = tam:text() .. "->" .. tu:text()
 
-      if not index[h1] and not index[h2] then
-        local prierez = svorka.prierez
+        if not index[h1] and not index[h2] then
+          local prierez = svorka.prierez
 
-        if not prierez and not os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") then
-          prierez = ui.actual:prompt("Prierez pre ", tu:text(), " chýba, zadaj ho prosím\nprierez: ")
+          if not prierez and not os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") then
+            prierez = ui.actual:prompt("Prierez pre ", tu:text(), " chýba, zadaj ho prosím\nprierez: ")
+          end
+
+          if not prierez then
+            prierez = "-"
+          end
+
+          if not banany[prierez] then
+            banany[prierez] = {}
+          end
+
+          table.insert(banany[prierez], bnn.sprav(smer, k2, k1))
+          table.insert(banany[prierez], bnn.sprav(smer, k1, k2))
+          index[h1] = true
+          index[h2] = true
         end
-
-        if not prierez then
-          prierez = "-"
-        end
-
-        if not banany[prierez] then
-          banany[prierez] = {}
-        end
-
-        table.insert(banany[prierez], bnn.sprav(smer, k2, k1))
-        table.insert(banany[prierez], bnn.sprav(smer, k1, k2))
-        index[h1] = true
-        index[h2] = true
       end
     end
   end
