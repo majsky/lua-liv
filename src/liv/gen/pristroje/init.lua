@@ -33,7 +33,7 @@ function devapi.nacitaj(path)
 end
 
 function devapi.proto:uloz(path)
-    local fh = io.open(path)
+    local fh = io.open(path, "w")
 
     for k, v in pairs(self.db) do
         fh:write(k, ":", v, "\n")
@@ -77,7 +77,7 @@ end
 function devapi.proto:nasmeruj(nazov, svorka)
     local typ = self.db[nazov]
     if not typ then
-        error("'" .. nazov "' nemá zaregistrovaný typ!")
+        error("'" .. nazov .. "' nemá zaregistrovaný typ!")
     end
 
     local hnd = devapi.typy[typ]
