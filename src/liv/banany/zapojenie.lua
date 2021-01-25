@@ -71,8 +71,8 @@ function zap.proto:generuj()
         pristroj = svorka.cpristroj
       }
 
-      local tu = addr(nil, nil, pristroj, svorka.svorka)
-      local tam = addr(nil, nil, svorka.cpristroj, svorka.csvorka)
+        local tu = addr.new(nil, nil, pristroj, svorka.svorka)
+        local tam = addr.new(nil, nil, svorka.cpristroj, svorka.csvorka)
 
       local h1 = tu:text() .. "->" .. tam:text()
       local h2 = tam:text() .. "->" .. tu:text()

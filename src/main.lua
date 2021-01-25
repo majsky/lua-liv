@@ -15,7 +15,7 @@ ui.init(ui.modes.text)
 
 local klo = import("klo.CSV")
 local gan = import("gan.csv")
-local zap = zapojenie.new(addr("ADA06", "ASD06"), gan, klo)
+local zap = zapojenie.new(addr.new("ADA06", "ASD06"), gan, klo)
 local zp = pristroje.new()
 zp:analyzuj(zap)
 local b = zap:generuj()
