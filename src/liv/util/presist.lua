@@ -16,9 +16,13 @@ function presisit.save(what, where)
   fh:close()
 end
 
-function presisit.load(where)
+function presisit.load(where, def)
   local fh = io.open(where, "r")
   local data = {}
+
+  if not fh then
+    return def or {}
+  end
 
   local line = fh:read("*l")
   while line do

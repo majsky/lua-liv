@@ -53,7 +53,7 @@ function devapi.proto:analyzuj(zapojenie)
 
     for _, nazov in pairs(zapojenie.pristroje) do
         local t = self:otypuj(nazov, zapojenie.data[nazov])
-        if t then
+        if t and not self.db[nazov] then
             self:registruj(nazov, t)
         end
     end
@@ -63,6 +63,7 @@ end
 
 function devapi.proto:dopln()
     ui.actual:zobrazMenu("pristroje", self)
+    return self
 end
 
 function devapi.proto:otypuj(nazov, svorky)

@@ -92,7 +92,7 @@ local function gen(self, lst, pristroje, banany, index)
           local prierez = svorka.prierez
 
           if not prierez then
-            local d = self.dopnene.prierezy[tu:text()]
+            local d = self.doplnene.prierezy[tu:text()]
             if d then
               prierez = d
             end
@@ -168,7 +168,7 @@ function zap.proto:ulozDoplnene(path)
 end
 
 function zap.proto:nacitajDoplnenia(path)
-  self.dopnene = presist.load(path)
+  self.doplnene = presist.load(path, {prierezy = {}, default = true})
   return self
 end
 

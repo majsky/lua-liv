@@ -1,3 +1,5 @@
+local lfs = require("lfs")
+
 local import = require("liv.import")
 local pristroje = require("liv.gen.pristroje")
 
@@ -10,7 +12,7 @@ if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
   require("lldebugger").start()
 end
 ]]
-
+print(lfs.currentdir ())
 package.cpath = package.cpath .. ";c:/Users/oresany/.vscode/extensions/tangzx.emmylua-0.3.49/debugger/emmy/windows/x86/?.dll"
 local dbg = require("emmy_core")
 dbg.tcpListen("localhost", 9966)
@@ -18,9 +20,9 @@ dbg.waitIDE()
 
 ui.init(ui.modes.text)
 
-local klo = import("klo.CSV")
-local gan = import("gan.csv")
-local zap = zapojenie.new(addr.new("ADA06", "ASD06"), gan, klo)
+local klo = import("../lua-libliv/klo.CSV")
+local gan = import("../lua-libliv/gan.csv")
+local zap = zapojenie.new(addr.new("=ADA06", "+ASD06"), gan, klo)
 zap:nacitajDoplnenia("doplnene.csv")
 --local zp = pristroje.new()
 --zp:analyzuj(zap):dopln(zap)
@@ -33,13 +35,18 @@ zap:nacitajDoplnenia("doplnene.csv")
 --th:close()
 
 local zp = pristroje.nacitaj("pristroje.csv")
-zp:dopln()
+zp:analyzuj(zap):dopln():uloz("pristroje.csv")
 zp:uloz("pristroje.csv")
 local b = zap:generuj(zp)
 zap:ulozDoplnene("doplnene.csv")
 
+lfs.mkdir("banany")
+lfs.chdir("banany")
+lfs.mkdir(zap.pole)
+lfs.mkdir(zap.pole .. "/" .. zap.skrina)
+lfs.chdir(zap.pole .. "/" .. zap.skrina)
 for pr, bny in pairs(b) do
-  local fh = io.open(pr .. ".csv", "w")
+  local fh = io.open(lfs.currentdir() .. "/" .. pr .. ".csv", "w")
   for _, bn in pairs(bny) do
     fh:write(bn, "\n")
   end
