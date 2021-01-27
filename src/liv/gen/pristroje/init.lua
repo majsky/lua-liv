@@ -1,3 +1,4 @@
+local presisit = require("liv.util.presist")
 local ui = require("liv.ui")
 
 local devapi = {
@@ -17,29 +18,14 @@ end
 
 
 function devapi.nacitaj(path)
-    local fh = io.open(path, "r")
-
     local o = devapi.new()
-    local line = fh:read("*l")
-    while line do
-        local pr, ty = line:match("([^:]+):(.+)")
-        o:registruj(pr, ty)
-        line = fh:read("*l")
-    end
-
-    fh:close()
+    o.db = presisit.load(path)
 
     return o
 end
 
 function devapi.proto:uloz(path)
-    local fh = io.open(path, "w")
-
-    for k, v in pairs(self.db) do
-        fh:write(k, ":", v, "\n")
-    end
-
-    fh:close()
+    presisit.save(self.db, path)
 end
 
 function devapi.proto:registruj(nazov, typ)
