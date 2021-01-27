@@ -81,6 +81,10 @@ function devapi.proto:nasmeruj(nazov, svorka)
         error("'" .. nazov .. "' nemá zaregistrovaný typ!")
     end
 
+    if typ == "svorkovnica" then
+        return svorka.smer
+    end
+
     local hnd = devapi.typy[typ]
 
     if not hnd then

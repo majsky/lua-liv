@@ -22,8 +22,17 @@ local map = {
   ["rsvorka"] = "INTERNÍ :1",
 }
 
+local skipp = {
+  ["STENA SKRINE"] = true,
+  ["DVERE"] = true,
+  ["RÁM"] = true
+}
 local function odstranBordel(str)
-  return str:match("[=%+-]?(.+)")
+  str = str:match("[=%+-]?(.+)")
+  if skipp[str] then
+    return ""
+  end
+  return str
 end
 
 local function store(t, v, ...)
@@ -81,6 +90,9 @@ function klo.process(head, lines)
           smer = bnn.LAVY,
           obsadena = true
         }
+        if ld.cpristroj == "" then
+          ld.obsadena = false
+        end
         store(data, ld, l.pole, l.skrina, l.svorkovnica)
       end
 
@@ -99,6 +111,9 @@ function klo.process(head, lines)
           smer = bnn.PRAVY,
           obsadena = true
         }
+        if ld.cpristroj == "" then
+          ld.obsadena = false
+        end
         store(data, ld, l.pole, l.skrina, l.svorkovnica)
       end
     end

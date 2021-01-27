@@ -42,7 +42,7 @@ function csvreader.parse(header, lines)
     error("Unkown type")
   end
 
-  return csvreader.types[csvtype].process(header, lines)
+  return csvreader.types[csvtype].process(header, lines), csvtype
 end
 
 local function trim(s)
