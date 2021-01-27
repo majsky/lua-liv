@@ -25,7 +25,7 @@ function live.start()
   local o = setmetatable({
     rt = ogrt.new(live.onerror),
     out = outstream.wrap(io.stdout),
-    cmds = require("octagen.cmds")()
+    --cmds = require("octagen.cmds")()
   }, _live)
 
   repeat

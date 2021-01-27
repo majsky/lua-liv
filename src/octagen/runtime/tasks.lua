@@ -226,33 +226,55 @@ function tasks:overpristroje()
   table.sort(definicie)
 
   while true do
-    local zoradene = {}
-    for n, typ in pairs(self.zozPrist.db) do
-      table.insert(zoradene, {n, typ})
-      maxl = math.max(#n, #typ, maxl)
-    end
-
-    table.sort(zoradene,function(a, b)
-      return a[1] < b[1]
-    end)
-
-    local p = vyber(zoradene, "blue")
-
-    if p[0] then
-      break
-    end
-
-    local d = nil
-    for idpr in pairs(p) do
-      if not d then
-        local dt = vyber(definicie, "yellow")
-        for k in pairs(dt) do
-          d = k
-          break
-        end
+    while true do
+      local zoradene = {}
+      for n, typ in pairs(self.zozPrist.db) do
+        table.insert(zoradene, {n, typ})
+        maxl = math.max(#n, #typ, maxl)
       end
-      local pid = zoradene[idpr][1]
-      rawset(self.zozPrist.db, pid, definicie[d])
+
+      table.sort(zoradene,function(a, b)
+        return a[1] < b[1]
+      end)
+
+      local p = vyber(zoradene, "blue")
+
+      if p[0] then
+        break
+      end
+
+      local d = nil
+      for idpr in pairs(p) do
+        if not d then
+          local dt = vyber(definicie, "yellow")
+          for k in pairs(dt) do
+            d = k
+            break
+          end
+        end
+        local pid = zoradene[idpr][1]
+        rawset(self.zozPrist.db, pid, definicie[d])
+      end
+    end
+
+    local chyba = {}
+    for n, typ in pairs(self.zozPrist.db) do
+      table.insert(chyba, n)
+    end
+
+    if #chyba > 0 then
+      local cht = #chyba
+
+      if cht < 10 then
+        cht = table.concat(chyba, " ")
+      end
+
+      printf("@bNiektore priestroje (@r%s@b) stale nemaju typ.", cht)
+      printf("@mNaozaj pokracovat? @w[@ga@w/@rN@w] ")
+      local a = string.lower(io.stdin:read(1))
+      if a == "a" then
+        break
+      end
     end
   end
 
