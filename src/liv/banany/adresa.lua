@@ -7,10 +7,12 @@ local _addr = {
 }
 
 local controlChars = {
-  ["="] = "pole",
-  ["%+"] = "skrina",
-  ["-"] = "pristroj",
-  [":"] = "svorka"
+  {z="=", n="pole"},
+  {z="%+", n="skrina"},
+  {z="-", n="pristroj"},
+  {z="%+", n="pristroj2"},
+  {z="-", n="pristroj3"},
+  {z=":", n="svorka"}
 }
 
 local function rmprefix(str)
@@ -22,29 +24,54 @@ end
 ---@param skrina string|nil
 ---@param pristroj string|nil
 ---@param svorka string|nil
-function addr.new(pole, skrina, pristroj, svorka)
-  if not skrina and not pristroj and not svorka and type(pole) == "string" then
-    pole, skrina, pristroj, svorka = string.match(pole, "=?([A-Z0-9]*)%+?([A-Z0-9]*)-?([A-Z0-9]*):?([A-Z0-9]*)")
-  end
-
-  pole = rmprefix(pole)
-  skrina = rmprefix(skrina)
-  pristroj = rmprefix(pristroj)
-  svorka = rmprefix(svorka)
-
+function addr.new(pole, skrina, pristroj, pristroj2, pristroj3, svorka)
   ---@class Addresa
   ---@field pole string
   ---@field skrina string
   ---@field pristroj string
+  ---@field pristroj2 string
+  ---@field pristroj3 string
   ---@field svorka string
-  local o = {
-    pole = pole,
-    skrina = skrina,
-    pristroj = pristroj,
-    svorka = svorka
-  }
+  local o = nil
+
+  if not skrina and not pristroj and not pristroj2 and not pristroj3 and not svorka and type(pole) == "string" then
+    o = addr.spracuj(pole)
+  else
+    pole = rmprefix(pole)
+    skrina = rmprefix(skrina)
+    pristroj = rmprefix(pristroj)
+    pristroj2 = rmprefix(pristroj2)
+    pristroj3 = rmprefix(pristroj3)
+    svorka = rmprefix(svorka)
+
+    o = {
+      pole = pole,
+      skrina = skrina,
+      pristroj = pristroj,
+      pristroj2 = pristroj2,
+      pristroj3 = pristroj3,
+      svorka = svorka
+    }
+  end
 
   return setmetatable(o, _addr)
+end
+
+function addr.spracuj(adresa)
+  local d={}
+  local chi = 1
+  for i=1, #controlChars do
+    local tknd = controlChars[i]
+
+    local zac, kon = string.find(adresa, tknd.z .. "[%a%d%.]+", chi)
+    if zac then
+      local tkn = string.sub(adresa, zac + 1, kon)
+      chi = kon + 1
+      d[tknd.n] = tkn
+    end
+  end
+
+  return d
 end
 
 function addr.vyber(text)
@@ -64,24 +91,12 @@ end
 function addr._proto:text()
   local b = {}
 
-  if #self.pole > 0 then
-    table.insert(b, "=")
-    table.insert(b, self.pole)
-  end
-
-  if #self.skrina > 0 then
-    table.insert(b, "+")
-    table.insert(b, self.skrina)
-  end
-
-  if #self.pristroj > 0 then
-    table.insert(b, "-")
-    table.insert(b, self.pristroj)
-  end
-
-  if #self.svorka > 0 then
-    table.insert(b, ":")
-    table.insert(b, self.svorka)
+  for _, cast in ipairs(controlChars) do
+    if string.len(self[cast.n]) then
+      local char = cast.z:gsub("%%", "")
+      table.insert(b, char)
+      table.insert(b, self[cast.n])
+    end
   end
 
   return table.concat(b)
