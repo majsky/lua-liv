@@ -2,6 +2,7 @@ local rawterm = require("rawterm")
 local clr = require("ansicolors")
 local windcon = require('windcon')
 local lfs = require("lfs")
+local utf8 = require("utf8")
 
 local zapojenie = require("liv.banany.zapojenie")
 local pristroje = require("liv.gen.pristroje")
@@ -12,21 +13,14 @@ local presist = require("liv.util.presist")
 local generator = require("octagen.runtime.gen")
 local tc = require("octagen.utils.tcolor")
 local multicolumn = require("octagen.ui.multicolumn")
+---@type Powerline
+local powerline = require("octagen.ui.powerline")
 
 local printf = tc.printf
 local tasks = {}
 
 local function getbasedir(self, fn)
   return string.format("%s/%s/%s/%s", lfs.currentdir(), self.zapojenie.pole, self.zapojenie.skrina, fn)
-end
-
-local function gen_pristroje(zoznamPristrojov)
-  local pristroje = {}
-  for nazov, typ in pairs(zoznamPristrojov.db) do
-    table.insert(pristroje, string.format("%s\t%s", nazov,typ))
-  end
-  table.sort(pristroje)
-  return pristroje
 end
 
 local function vyber(zoznam, farba)
@@ -49,68 +43,56 @@ local function vyber(zoznam, farba)
     io.stdout:write(clr("%{" .. fb .. "}" .. string.format("%d:\t%s", ln, txt)), "\n")
   end
 
-  io.stdout:write(clr("%{red}Vyber viacero %{white}(napr 1, 5;20;25, 1-15, 1-20;^4, ^15, 0 - pokračuj)"), "\n")
+  printf("@rVyber @w(napr '@m1@w', '@m5 20 25@w', '@m1-15@w', '@m1-20 ^4@w', '@m^15@w', '@m0@w' - pokračuj)")
   local i = io.stdin:read("*l")
 
   local vyber = {}
-    local block = {}
-    for tkn in i:gmatch("(%^?[%d-]+),?") do
-      local data = nil
-      local target = vyber
+  local block = {}
+  for tkn in i:gmatch("(%^?[%d-]+),?") do
+    local data = nil
+    local target = vyber
 
-      if tkn:sub(1,1) == "^" then
-        target = block
-        tkn = tkn:sub(2, #tkn)
-      end
-
-      local dash = tkn:find("-")
-      if dash then
-        local zac = tonumber(tkn:sub(1, dash-1))
-        local kon = tonumber(tkn:sub(dash+1, #tkn))
-        --("((%d+)-(%d+))")
-
-        if kon < zac then
-          local tmp = zac
-          zac = kon
-          kon = zac
-        end
-
-        data = {}
-
-        for i = zac, kon do
-          table.insert(data, i)
-        end
-      elseif tonumber(tkn) then
-        data = tonumber(tkn)
-      end
-
-      if type(data) == "table" then
-        for _, v in pairs(data) do
-          target[v] = true
-        end
-      else
-        target[data] = true
-      end
+    if tkn:sub(1,1) == "^" then
+      target = block
+      tkn = tkn:sub(2, #tkn)
     end
 
-    for k in pairs(block) do
-      vyber[k] = nil
+    local dash = tkn:find("-")
+    if dash then
+      local zac = tonumber(tkn:sub(1, dash-1))
+      local kon = tonumber(tkn:sub(dash+1, #tkn))
+      --("((%d+)-(%d+))")
+
+      if kon < zac then
+        local tmp = zac
+        zac = kon
+        kon = zac
+      end
+
+      data = {}
+
+      for i = zac, kon do
+        table.insert(data, i)
+      end
+    elseif tonumber(tkn) then
+      data = tonumber(tkn)
     end
 
-    return vyber
-
-end
-
-function tasks:help()
-  print("help1111s")
-  print(windcon.size())
-
-end
-
-function tasks:peak()
-  for k, v in pairs(self) do
-    print("peak", k, v)
+    if type(data) == "table" then
+      for _, v in pairs(data) do
+        target[v] = true
+      end
+    else
+      target[data] = true
+    end
   end
+
+  for k in pairs(block) do
+    vyber[k] = nil
+  end
+
+  return vyber
+
 end
 
 local function merge(t1, t2)
@@ -124,15 +106,27 @@ local function merge(t1, t2)
     end
   end
 end
+
+function tasks:help()
+  print("help1111s")
+  print(windcon.size())
+end
+
+function tasks:peek()
+  for k, v in pairs(self) do
+    print("peak", k, v)
+  end
+end
+
 function tasks:zober(...)
   local d = {}
   for _, p in pairs({...}) do
     if p:sub(#p, #p) == "/" then
       for f in lfs.dir(p) do
         if f == "." or f == ".." then
-          print("Preskakujem", f)
+          printf("@mPreskakujem @r%s%s", p, f)
         else
-          print("citam", p .. f)
+          printf("@mCitam @g%s%s", p, f)
           local data, typ = import(p .. f)
           if d[typ] then
             merge(d[typ], data)
@@ -142,7 +136,7 @@ function tasks:zober(...)
         end
       end
     else
-      print("citam", p)
+      printf("@mCitam @g%s%s", p, f)
       local data, typ = import(p)
       rawset(d, typ, data)
     end
@@ -174,8 +168,13 @@ function tasks:vydratuj(pole, skrina)
   self.zapojenie = zapojenie.new(addr.new(pole, skrina), self.gan, self.klo)
   self.zapojenie:nacitajDoplnenia(getbasedir(self, "doplnenie.txt"))
   local ppath = getbasedir(self, "pristroje.txt")
-  self.zozPrist = presist.exists(ppath) and pristroje.nacitaj(ppath) or pristroje.new()
-  self.zozPrist:analyzuj(self.zapojenie)
+  self.zozPrist = pristroje.new(self.zapojenie)
+
+  if presist.exists(ppath) then
+    self.zozPrist:nacitaj(ppath)
+  end
+
+  self.basead = powerline.adresa(addr.new(pole, skrina))
 end
 
 function tasks:overzapojenie()
@@ -190,7 +189,11 @@ function tasks:overzapojenie()
     if stam and stam.prierez then
       pri = stam.prierez
     else
-      printf("\nZadaj @rprierez@w pre @g%s@w:@m%s @w=> @g%s@w:@m%s", pr, sv.svorka, sv.cpristroj, sv.csvorka)
+     -- local a = addr.new("pole", "skrina", sv.pristroj, sv.pristroj2, sv.pristroj3, sv.svorka)
+      local a = addr.new("", "", pr, sv.pristroj2, sv.pristroj3, sv.svorka)
+      local b = addr.new("", "", sv.cpristroj, sv.cpristroj2, sv.cpristroj3, sv.csvorka)
+      printf("%s%s", clr("Pracujes na: "),self.basead)
+      printf("\nZadaj @rprierez@w pre %s @w%s %s", powerline.adresa(a,"test"), utf8.char(0xf061), powerline.adresa(b))
       pri = io.stdin:read("*l")
     end
 
@@ -281,7 +284,17 @@ function tasks:overpristroje()
   self.zozPrist:uloz(getbasedir(self, "pristroje.txt"))
 end
 
-function tasks:export(...)
+function tasks:zpristrojov()
+  self.pristroje = {}
+
+  for k in pairs(self.zozPrist.db) do
+    table.insert(self.pristroje, k)
+  end
+
+  table.sort(self.pristroje)
+end
+
+function tasks:vypluj(...)
   local function s(p, t)
     local fh = io.open(p, "w")
     for ln, l in ipairs(t) do
@@ -290,13 +303,17 @@ function tasks:export(...)
     end
     fh:close()
   end
+
   for i, v in pairs({...}) do
     local o = self[v]
 
-    if type(o) == "table" then
+    if v == "pristroje" then
+      lfs.mkdir(getbasedir(self, "banany"))
+      s(getbasedir(self, "banany/pristroje.csv"), o)
+    elseif type(o) == "table" then
       lfs.mkdir(getbasedir(self, v))
       for k, t in pairs(o) do
-        s(getbasedir(self, v .. "/" .. k .. ".csv"), t)
+        s(getbasedir(self, string.format("%s/%s.csv", v, k)), t)
       end
     end
   end

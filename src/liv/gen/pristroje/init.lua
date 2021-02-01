@@ -9,17 +9,13 @@ local devapi = {
 
 local _devapi = {__index=devapi.proto}
 
-function devapi.new()
+function devapi.new(zapojenie)
     ---@class ZoznamPristrojov
-    local o = {db = {}}
+    local o = setmetatable({db = {}}, _devapi)
 
-    return setmetatable(o, _devapi)
-end
-
-
-function devapi.nacitaj(path)
-    local o = devapi.new()
-    o.db = presisit.load(path)
+    if zapojenie then
+        o:analyzuj(zapojenie)
+    end
 
     return o
 end
@@ -45,6 +41,16 @@ function devapi.proto:analyzuj(zapojenie)
     end
 
     return self
+end
+
+function devapi.proto:nacitaj(path)
+    local loaded = presisit.load(path)
+
+    for n,t in pairs(self.db) do
+        if loaded[n] then
+            self.db[n] = loaded[n]
+        end
+    end
 end
 
 function devapi.proto:dopln()
