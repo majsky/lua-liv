@@ -1,4 +1,5 @@
 local presisit = require("liv.util.presist")
+local logger = require("liv.util.log")
 local ui = require("liv.ui")
 
 local devapi = {
@@ -11,7 +12,10 @@ local _devapi = {__index=devapi.proto}
 
 function devapi.new(zapojenie)
     ---@class ZoznamPristrojov
-    local o = setmetatable({db = {}}, _devapi)
+    local o = setmetatable({
+        db = {},
+        log = logger.new("pristroje")
+    }, _devapi)
 
     if zapojenie then
         o:analyzuj(zapojenie)
@@ -22,6 +26,10 @@ end
 
 function devapi.proto:uloz(path)
     presisit.save(self.db, path)
+end
+
+function devapi.proto:ulozLog(path)
+    self.log:uloz(path)
 end
 
 function devapi.proto:registruj(nazov, typ)
@@ -83,7 +91,9 @@ function devapi.proto:nasmeruj(nazov, svorka)
         error("Neznamy typ zariadenia '" .. typ .. "'")
     end
 
-    return hnd.nasmeruj(nazov, svorka, typ)
+    local smer = hnd.nasmeruj(nazov, svorka, typ)
+    self.log:info(nazov, svorka.svorka, smer)
+    return smer
 end
 
 return devapi

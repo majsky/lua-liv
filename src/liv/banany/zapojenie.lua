@@ -212,14 +212,7 @@ function zap.proto:generuj(pristroje)
     stam.vygenerovana = true
   end
 
-  --[[
-  local banany = {}
-  local index = {}
-
-  gen(self, self.pristroje, pristroje, banany, index)
-  gen(self, self.svorkovnice, pristroje, banany, index)
-]]
-
+  pristroje:ulozLog(self.pole .. "/" .. self.skrina .. "/banany.log")
   return banany
 end
 
