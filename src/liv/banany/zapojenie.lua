@@ -10,7 +10,9 @@ local _zap = {__index=zap.proto}
 ---@param adresa Addresa
 ---@param gan Gan
 ---@param klo Klo
+---@return Zapojenie
 function zap.new(adresa, gan, klo)
+  ---@class Zapojenie
   local o = {
     pole = adresa.pole,
     skrina = adresa.skrina,
@@ -21,6 +23,13 @@ function zap.new(adresa, gan, klo)
       prierezy = {}
     }
   }
+
+  if not gan[o.pole] then
+    error("GAN neobsahuje pole " .. o.pole)
+  end
+  if not gan[o.pole][o.skrina] then
+    error("Gan neobsahuje skrinu " .. o.skrina)
+  end
 
   for k, v in pairs(gan[o.pole][o.skrina]) do
     o.data[k] = v
@@ -68,8 +77,8 @@ local function gen(self, lst, pristroje, banany, index)
           pristroj = svorka.cpristroj
         }
 
-        local tu = addr.new(nil, nil, pristroj, svorka.svorka)
-        local tam = addr.new(nil, nil, svorka.cpristroj, svorka.csvorka)
+        local tu = addr.new(nil, nil, pristroj, svorka.pristroj2, svorka.pristroj3, svorka.svorka)
+        local tam = addr.new(nil, nil, svorka.cpristroj, svorka.cpristroj2, svorka.cpristroj3, svorka.csvorka)
 
         local smer1 = svorka.smer
 
@@ -95,9 +104,11 @@ local function gen(self, lst, pristroje, banany, index)
         end
 
         local h1 = tu:text() .. "->" .. tam:text()
+
         local h2 = tam:text() .. "->" .. tu:text()
 
         if not index[h1] and not index[h2] then
+
           local prierez = svorka.prierez
 
           if not prierez then
@@ -154,11 +165,60 @@ local function copyto(src, dest)
 end
 function zap.proto:generuj(pristroje)
   local banany = {}
+  for tu, sv in self:prejdi(function(a, s) return s.obsadena and not s.vygenerovana and s.cpole == self.pole and s.cskrina == self.skrina end) do
+    local tam = addr.new(tu.pole, tu.skrina, sv.cpristroj, sv.cpristroj2, sv.cpristroj3, sv.csvorka)
+    local stam = self:dajsvorku(tam, tu)
+
+    if not stam then
+      print("Svorka " .. tam:text() .. " sa nenasla. (Chcem pripojit " .. tu:text() .. ")")
+    end
+
+    local smtu = sv.smer
+
+    if not smtu then
+      smtu = pristroje:nasmeruj(tu.pristroj, sv)
+    end
+
+    if not smtu then
+      print(tu:text() .. " nema nasmerovanie, davam lave...")
+      smtu = "L"
+    end
+
+    local smtam = stam.smer
+
+    if not smtam then
+      smtam = pristroje:nasmeruj(tam.pristroj, stam)
+    end
+
+    if not smtam then
+      print(tam:text() .. " nema nasmerovanie, davam lave...")
+      smtam = "L"
+    end
+
+    local prierez = sv.prierez or stam.prierez
+    if not prierez then
+      print(tu:text() .. "=>" .. tam:text() .. " nema prierez, davam 1,5...")
+      prierez = "1,5mm"
+    end
+
+    if not banany[prierez] then
+      banany[prierez] = {}
+    end
+
+    table.insert(banany[prierez], bnn.sprav(smtu, tu, tam))
+    table.insert(banany[prierez], bnn.sprav(smtam, tam, tu))
+
+    sv.vygenerovana = true
+    stam.vygenerovana = true
+  end
+
+  --[[
+  local banany = {}
   local index = {}
 
   gen(self, self.pristroje, pristroje, banany, index)
   gen(self, self.svorkovnice, pristroje, banany, index)
-
+]]
 
   return banany
 end
@@ -187,11 +247,26 @@ function zap.proto:nacitajDoplnenia(path)
   return self
 end
 
-function zap.proto:dajsvorku(pristroj, svorka)
+function zap.proto:dajsvorku(pristroj, svorka, cpristroj, csvorka)
+  if type(pristroj) == "table" then
+    if type(svorka) == "table" then
+      cpristroj = svorka.pristroj
+      csvorka = svorka.svorka
+    end
+
+    svorka = pristroj.svorka
+    pristroj = pristroj.pristroj
+  end
+
   local prs = self.data[pristroj]
   if not prs then return end
   for _, s in pairs(prs) do
     if s.svorka == svorka then
+      if cpristroj and csvorka then
+        if s.cpristroj == cpristroj and s.csvorka == csvorka then
+          return s
+        end
+      end
       return s
     end
   end
@@ -223,13 +298,9 @@ end
 end
 
 function zap.proto:nevyplnene()
- -- local data = self.data
   local co = coroutine.create(function()
     for npr, pr in pairs(self.data) do
       for _, sv in pairs(pr) do
-        if npr == "XN2" and sv.svorka == "19" then
-          print "tu"
-        end
         if sv.obsadena and (not sv.prierez or sv.prierez == "-") then
           coroutine.yield(npr, sv)
         end
@@ -240,6 +311,42 @@ function zap.proto:nevyplnene()
   return function()
     local code, pr, sv = coroutine.resume(co)
     return pr, sv
+  end
+end
+
+function zap.proto:prejdi(filter)
+  local co = coroutine.create(function(filter)
+    table.sort(self.pristroje)
+    for _, npr in ipairs(self.pristroje) do
+      local pr = self.data[npr]
+      for _, sv in pairs(pr) do
+        local a = addr.new(self.pole, self.skrina, npr, sv.pristroj2, sv.pristroj3, sv.svorka)
+        if not filter or filter(a, sv) then
+          coroutine.yield(a, sv)
+        end
+      end
+    end
+
+    table.sort(self.svorkovnice)
+    for _, npr in ipairs(self.svorkovnice) do
+      local pr = self.data[npr]
+      for _, sv in pairs(pr) do
+        local a = addr.new(self.pole, self.skrina, npr, sv.pristroj2, sv.pristroj3, sv.svorka)
+        if not filter or filter(a, sv) then
+          coroutine.yield(a, sv)
+        end
+      end
+    end
+  end)
+
+  return function()
+    local status, ad, sv = coroutine.resume(co, filter)
+
+    if not status then
+      error(ad)
+    end
+
+    return ad, sv
   end
 end
 

@@ -3,21 +3,48 @@ local bnn = {
   PRAVY = "P"
 }
 
-function bnn.sprav(smer, k1, k2)
+function bnn.sprav(smer, tu, tam)
+  local cnt = nil
   if smer == bnn.LAVY then
-    return bnn.spravLavy(k1, k2)
+    cnt = {bnn.spravLavy(tam), tu.pristroj, bnn.spravPravy(tu)}
   elseif smer == bnn.PRAVY then
-    return bnn.spravPravy(k1, k2)
+    cnt = {bnn.spravLavy(tu), tu.pristroj, bnn.spravPravy(tam)}
   end
-  error("Neznamy smer: " .. smer)
+
+  if not cnt then
+    error("Neznamy smer: " .. smer)
+  end
+
+  return table.concat(cnt, ":")
 end
 
-function bnn.spravLavy(k1, k2)
-  return string.format("%s:%s:%s", k2.svorka, k2.pristroj, k1.svorka)
+local koncovka = {"svorka", "pristroj3", "pristroj2"}
+local function urobKoniec(adr, i, j, k)
+  local t = {}
+  for _i = i, j, k do
+    local psep = _i ~= 1
+    if #adr[koncovka[_i]] > 0 then
+      if psep and k > 0 then
+        table.insert(t, "/")
+      end
+
+      table.insert(t, adr[koncovka[_i]])
+
+      if psep and k < 0 then
+        table.insert(t, "/")
+      end
+    end
+  end
+
+  return table.concat(t)
 end
 
-function bnn.spravPravy(k1, k2)
-  return string.format("%s:%s:%s", k1.svorka, k2.pristroj, k2.svorka)
+function bnn.spravLavy(a)
+  return urobKoniec(a, 1, #koncovka, 1)
+end
+
+function bnn.spravPravy(a)
+  return urobKoniec(a, #koncovka, 1, -1)
 end
 
 return bnn

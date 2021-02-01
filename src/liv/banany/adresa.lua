@@ -92,7 +92,7 @@ function addr._proto:text()
   local b = {}
 
   for _, cast in ipairs(controlChars) do
-    if string.len(self[cast.n]) then
+    if string.len(self[cast.n]) > 0 then
       local char = cast.z:gsub("%%", "")
       table.insert(b, char)
       table.insert(b, self[cast.n])
