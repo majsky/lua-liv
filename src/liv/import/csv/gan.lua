@@ -114,6 +114,10 @@ function gan.process(head, lines)
           end
         end
 
+        if string.sub(ldata.pristroj2, 1, 1) == "." then
+          ldata.pristroj2 = ldata.pristroj2:sub(2, #ldata.pristroj2)
+        end
+
         if #l.cpole == 0 then
           l.cpole = pole
         end
