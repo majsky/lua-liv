@@ -6,7 +6,14 @@ local pop = {
 }
 
 function pop.nasmeruj(nazov, svorka, typ)
-    local def = typ:sub(2,#typ)
+    local d = typ:sub(2,#typ)
+
+    if pop.def[d] then
+        --TODO Toto nieje na 100% dokoncene!
+        local s = pop.def[d][svorka.svorka]
+        --print("PPP: " .. nazov .. ":" .. svorka.svorka .." - " .. (s or "nil"))
+        return s
+    end
 
     return "L"
 end
