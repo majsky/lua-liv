@@ -6,9 +6,9 @@ local bnn = {
 function bnn.sprav(smer, tu, tam)
   local cnt = nil
   if smer == bnn.LAVY then
-    cnt = {bnn.spravLavy(tam), tu.pristroj, bnn.spravPravy(tu)}
+    cnt = {bnn.spravLavy(tam), tam.pristroj, bnn.spravPravy(tu)}
   elseif smer == bnn.PRAVY then
-    cnt = {bnn.spravLavy(tu), tu.pristroj, bnn.spravPravy(tam)}
+    cnt = {bnn.spravLavy(tu), tam.pristroj, bnn.spravPravy(tam)}
   end
 
   if not cnt then

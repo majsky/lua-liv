@@ -9,17 +9,24 @@ function pop.nasmeruj(nazov, svorka, typ)
     local d = typ:sub(2,#typ)
 
     if pop.def[d] then
-        --TODO Toto nieje na 100% dokoncene!
-        local s = pop.def[d][svorka.svorka]
+        local pristroj = pop.def[d]
+        local smer = pristroj[svorka.svorka]
+
+        if not smer then
+            if pristroj.vsetky then
+                smer = pristroj.vsetky
+            end
+        end
         --print("PPP: " .. nazov .. ":" .. svorka.svorka .." - " .. (s or "nil"))
-        return s
+        return smer
     end
 
+    error("WTf" .. nazov .. " " .. typ)
     return "L"
 end
 
 function pop.jetyp(typ)
-    return typ:sub(1,1) == "@"
+    return (typ:sub(1,1) == "@")
 end
 
 function pop.definuje()

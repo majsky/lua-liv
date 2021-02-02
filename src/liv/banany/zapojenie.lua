@@ -163,6 +163,7 @@ local function copyto(src, dest)
 
   return dest
 end
+
 function zap.proto:generuj(pristroje)
   local banany = {}
   for tu, sv in self:prejdi(function(a, s) return s.obsadena and not s.vygenerovana and s.cpole == self.pole and s.cskrina == self.skrina end) do
@@ -205,8 +206,8 @@ function zap.proto:generuj(pristroje)
       banany[prierez] = {}
     end
 
-    table.insert(banany[prierez], bnn.sprav(smtu, tu, tam))
     table.insert(banany[prierez], bnn.sprav(smtam, tam, tu))
+    table.insert(banany[prierez], bnn.sprav(smtu, tu, tam))
 
     sv.vygenerovana = true
     stam.vygenerovana = true
@@ -264,6 +265,7 @@ function zap.proto:dajsvorku(pristroj, svorka, cpristroj, csvorka)
     end
   end
 end
+
 function zap.proto:jevyplnene()
     for npr, pr in pairs(self.data) do
       for _, sv in pairs(pr) do
@@ -287,6 +289,7 @@ function zap.proto:jevyplnene()
         end
       end
 end
+
   return true
 end
 
