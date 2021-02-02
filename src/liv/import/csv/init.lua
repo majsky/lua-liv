@@ -5,7 +5,8 @@ local convstr = require("liv.import.charset.stream")
 local csvreader = {
   types = {
     gan = require("liv.import.csv.gan"),
-    klo = require("liv.import.csv.klo")
+    klo = require("liv.import.csv.klo"),
+    kab = require("liv.import.csv.kab"),
   }
 }
 

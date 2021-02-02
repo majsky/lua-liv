@@ -23,7 +23,7 @@ end
 
 local function init()
   registruj("banany")
-
+  registruj("stitky")
 
   return gens
 end
