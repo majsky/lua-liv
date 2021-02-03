@@ -1,7 +1,15 @@
 local lgetchar = require("lgetchar")
 local windcon = require("windcon")
 
-local console = {}
+local console = {
+  keys = {
+    [13] = "enter",
+    [9] = "tab",
+    [8] = "bckspc",
+    [32] = "space",
+    [27] = "esc"
+  }
+}
 
 function console.getsize()
   local ansicon = os.getenv("ANSICON")
@@ -14,8 +22,19 @@ function console.getsize()
   return windcon.size()
 end
 
+function console.curpos(x, y)
+  windcon.movecursor(x, y)
+end
+
+function console.curvisible(visible)
+  windcon.showcursor(visible)
+end
+
+function console.clear()
+  windcon.clear()
+end
+
 function console.getkey()
-  while true do
     local c = lgetchar.getChar()
 
     if c == 224 then
@@ -30,10 +49,14 @@ function console.getkey()
         return "down"
       end
 
+    elseif console.keys[c] then
+      return console.keys[c]
+
     elseif (c >= 65 and c <= 90) or (c >= 97 and c <= 122) then
       return string.char(c)
     end
-  end
+
+    return c
 end
 
 return console
