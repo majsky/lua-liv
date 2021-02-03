@@ -53,101 +53,6 @@ function zap.new(adresa, gan, klo)
   return setmetatable(o, _zap)
 end
 
-local function gen(self, lst, pristroje, banany, index)
-  for i, pristroj in ipairs(lst) do
-    local svorky = self.data[pristroj]
-    table.sort(svorky, function(a, b)
-      local an, bn = tonumber(a.svorka), tonumber(b.svorka)
-
-      if an and bn then
-        return an < bn
-      end
-      return a.svorka < b.svorka
-    end)
-
-    for n, svorka in ipairs(svorky) do
-      if svorka.obsadena then
-        local k1 = {
-          svorka = svorka.svorka,
-          pristroj = pristroj
-        }
-
-        local k2 =  {
-          svorka = svorka.csvorka,
-          pristroj = svorka.cpristroj
-        }
-
-        local tu = addr.new(nil, nil, pristroj, svorka.pristroj2, svorka.pristroj3, svorka.svorka)
-        local tam = addr.new(nil, nil, svorka.cpristroj, svorka.cpristroj2, svorka.cpristroj3, svorka.csvorka)
-
-        local smer1 = svorka.smer
-
-        if not smer1 and pristroje then
-          smer1 = pristroje:nasmeruj(pristroj, svorka)
-        end
-
-        if not smer1 then
-          smer1 = ui.actual:prompt("Smer pre ", tu:text(), " chýba, zadaj ho prosím\nsmer [L|P]: ")
-        end
-
-        if not smer1 then
-          smer1 = bnn.LAVY
-        end
-
-        local smer2 = pristroje:nasmeruj(pristroj, svorka)
-        if not smer2 then
-          smer2 = bnn.LAVY
-        end
-
-        if not smer2 then
-          smer2 = ui.actual:prompt("Smer pre ", tam:text(), " chýba, zadaj ho prosím\nsmer [L|P]: ")
-        end
-
-        local h1 = tu:text() .. "->" .. tam:text()
-
-        local h2 = tam:text() .. "->" .. tu:text()
-
-        if not index[h1] and not index[h2] then
-
-          local prierez = svorka.prierez
-
-          if not prierez then
-            local d = self.doplnene.prierezy[tu:text()]
-            if d then
-              prierez = d
-            end
-          end
-
-          if not prierez and ui.actual then
-            prierez = ui.actual:prompt("Prierez pre ", tu:text(), " chýba, zadaj ho prosím\nprierez: ")
-
-            if prierez then
-              self.doplnene.prierezy[tu:text()] = prierez
-            end
-          end
-
-          if not prierez then
-            prierez = "-"
-          else
-            if not prierez:find("mm") then
-              prierez = prierez .. "mm"
-            end
-          end
-
-          if not banany[prierez] then
-            banany[prierez] = {}
-          end
-
-          table.insert(banany[prierez], bnn.sprav(smer1, k2, k1))
-          table.insert(banany[prierez], bnn.sprav(smer2, k1, k2))
-          index[h1] = true
-          index[h2] = true
-        end
-      end
-    end
-  end
-end
-
 local function copyto(src, dest)
   if not dest then
     dest = {}
@@ -165,8 +70,22 @@ local function copyto(src, dest)
 end
 
 function zap.proto:generuj(pristroje)
+  local index = {}
+  local function filter(a, s)
+    local tam = addr.new(s.cpole, s.cskrina, s.cpristroj, s.cpristroj2, s.cpristroj3, s.csvorka)
+
+    local tak = a:text() .. ">" .. tam:text()
+    local onak = tam:text() .. ">" .. a:text()
+    if index[tak] or index[onak] then
+      print(s.vygenerovana)
+      return false
+    end
+
+    return s.obsadena and (not s.vygenerovana) and (s.cpole == self.pole) and (s.cskrina == self.skrina)
+  end
+
   local banany = {}
-  for tu, sv in self:prejdi(function(a, s) return s.obsadena and not s.vygenerovana and s.cpole == self.pole and s.cskrina == self.skrina end) do
+  for tu, sv in self:prejdi(filter) do
     local tam = addr.new(tu.pole, tu.skrina, sv.cpristroj, sv.cpristroj2, sv.cpristroj3, sv.csvorka)
     local stam = self:dajsvorku(tam, tu)
 
@@ -209,6 +128,8 @@ function zap.proto:generuj(pristroje)
     table.insert(banany[prierez], bnn.sprav(smtam, tam, tu))
     table.insert(banany[prierez], bnn.sprav(smtu, tu, tam))
 
+    index[tu:text() .. ">" .. tam:text()] = true
+    index[tam:text() .. ">" .. tu:text()] = true
     sv.vygenerovana = true
     stam.vygenerovana = true
   end
