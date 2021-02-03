@@ -105,12 +105,12 @@ return function()
   local win = window.new(4, 2, ww, wh):settitle("Vyber subor")
   local sel = 1
   local tags = {}
+  local cd = dir()
 
   term.curvisible(false)
   while true do
     win:clear()
 
-    local cd = dir()
     win:curpos(1, 1)
     win:write(dispath())
     for ln, fname in ipairs(cd) do
@@ -159,11 +159,13 @@ return function()
     elseif key == "right" then
       if isdir(cd[sel]) then
         lfs.chdir(cd[sel])
+        cd = dir()
         sel = 1
       end
 
     elseif key == "left" then
       lfs.chdir("..")
+      cd = dir()
       sel = 1
 
     elseif key == "space" then
