@@ -129,13 +129,13 @@ return function()
 
       if ln == sel then
         if tagged(tags, fname) then
-          fname = ansicolors("%{yellowbg green}" .. fname)
+          fname = ansicolors("%{" .. colors.chooser.select .. "bg " .. colors.chooser.tag .. "}" .. fname)
         else
-          fname = ansicolors("%{yellowbg}" .. fname)
+          fname = ansicolors("%{" .. colors.chooser.select .. "bg}" .. fname)
         end
       else
         if tagged(tags, fname) then
-          fname = ansicolors("%{greenbg black}" .. fname)
+          fname = ansicolors("%{" .. colors.chooser.tag .. "bg black}" .. fname)
         end
       end
 
