@@ -20,6 +20,6 @@ end
 
 package.cpath = package.cpath .. makecpath()
 local dbg = require("emmy_core")
-dbg.tcpListen("localhost", 9966)
+dbg.tcpConnect("localhost", 9966)
 
 return dbg

@@ -36,7 +36,7 @@ function pop.definuje()
         table.insert(d, "@" .. k)
     end
 
-    return unpack(d)
+    return table.unpack(d)
 end
 
 return pop

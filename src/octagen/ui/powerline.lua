@@ -85,7 +85,7 @@ function pwrln.adresa(adr, prefix)
     if prefix then
       table.insert(segments, s("white", "black", pwrln.chars.tri, nil, prefix),1)
     end
-    pla = pwrln.build(unpack(segments))
+    pla = pwrln.build(table.unpack(segments))
   end
   return pla(
       adr.pole,

@@ -28,10 +28,10 @@ end
 function runtime.proto:eval(src)
   local s = 'return require("octagen.runtime").get(@id@):run()' .. src
   src = s:gsub("@id@", self.id)
-  local ok, compiled = pcall(loadstring, src, src)
+  local ok, compiled = pcall(load, src, src)
 
   if not ok then
-    self.onerr(compiled)
+    self.on_err(compiled)
     return
   end
 
