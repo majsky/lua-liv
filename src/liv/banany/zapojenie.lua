@@ -311,13 +311,17 @@ function zap.proto:nevyplnene()
 end
 
 function zap.proto:prejdi(filter)
-  local co = coroutine.create(function(filter)
+  local co = coroutine.create(function(flt)
     table.sort(self.pristroje)
     for _, npr in ipairs(self.pristroje) do
       local pr = self.data[npr]
       for _, sv in pairs(pr) do
         local a = addr.new(self.pole, self.skrina, npr, sv.pristroj2, sv.pristroj3, sv.svorka)
-        if not filter or filter(a, sv) then
+        if flt then
+          if flt(a, sv) then
+            coroutine.yield(a, sv)
+          end
+        else
           coroutine.yield(a, sv)
         end
       end
@@ -328,7 +332,11 @@ function zap.proto:prejdi(filter)
       local pr = self.data[npr]
       for _, sv in pairs(pr) do
         local a = addr.new(self.pole, self.skrina, npr, sv.pristroj2, sv.pristroj3, sv.svorka)
-        if not filter or filter(a, sv) then
+        if flt then
+          if flt(a, sv) then
+            coroutine.yield(a, sv)
+          end
+        else
           coroutine.yield(a, sv)
         end
       end
