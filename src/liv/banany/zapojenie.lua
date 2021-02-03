@@ -188,28 +188,28 @@ function zap.proto:dajsvorku(pristroj, svorka, cpristroj, csvorka)
 end
 
 function zap.proto:jevyplnene()
-    for npr, pr in pairs(self.data) do
-      for _, sv in pairs(pr) do
-        if sv.obsadena then
-          if not sv.prierez then
-            local opacnykonec = self:dajsvorku(sv.cpristroj, sv.csvorka).prierez
-            local tu = addr.new(nil, nil, npr, sv.svorka)
-            local tam = addr.new(nil, nil, sv.cpristroj, sv.csvorka)
-            local doplneny = self.doplnene.prierezy[tam:text()] or self.doplnene.prierezy[tu:text()]
+  for npr, pr in pairs(self.data) do
+    for _, sv in pairs(pr) do
+      if sv.obsadena then
+        if not sv.prierez then
+          local opacnykonec = self:dajsvorku(sv.cpristroj, sv.csvorka).prierez
+          local tu = addr.new(nil, nil, npr, sv.svorka)
+          local tam = addr.new(nil, nil, sv.cpristroj, sv.csvorka)
+          local doplneny = self.doplnene.prierezy[tam:text()] or self.doplnene.prierezy[tu:text()]
 
-            if doplneny then
-              sv.prierez = doplneny
-              break
-            elseif opacnykonec then
-              sv.prierez = opacnykonec
-              break
-            else
-              return false, {pr = npr, sv = sv, tu=tu, tam=tam}
-            end
+          if doplneny then
+            sv.prierez = doplneny
+            break
+          elseif opacnykonec then
+            sv.prierez = opacnykonec
+            break
+          else
+            return false, {pr = npr, sv = sv, tu=tu, tam=tam}
           end
         end
       end
-end
+    end
+  end
 
   return true
 end
