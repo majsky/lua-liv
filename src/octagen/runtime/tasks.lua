@@ -1,4 +1,3 @@
-local rawterm = require("rawterm")
 local clr = require("ansicolors")
 local windcon = require('windcon')
 local lfs = require("lfs")

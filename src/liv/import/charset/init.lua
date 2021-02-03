@@ -1,5 +1,3 @@
-local utf8 = require("utf8")
-
 local charset = {
   charsets = {
     CP1250 = require("liv.import.charset.cp1250")
@@ -23,7 +21,7 @@ function charset.convert(what, from)
 end
 
 function charset.wrap(stream, charset)
-  
+
 end
 
 return charset
