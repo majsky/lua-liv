@@ -20,6 +20,7 @@ return (function()
   platform.current = (package.config:sub(1,1) == "\\") and "win32" or "unix"
 
   getlib("term")
+  getlib("fs")
 
   return platform
 end)()
