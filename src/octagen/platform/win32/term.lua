@@ -59,4 +59,12 @@ function console.getkey()
     return c
 end
 
+function console.iscolor()
+  return os.getenv("ANSICON_DEF") ~= nil
+end
+
+function console.isicon()
+  return os.getenv("ConEmuBuild") ~= nil
+end
+
 return console

@@ -4,14 +4,17 @@ local ansicolors = require("ansicolors")
 local colors = require("octagen.ui.skin.4bit")
 local window = require("octagen.ui.window")
 local platform = require("octagen.platform")
+local icoload = require("octagen.ui.icoload")
 local term = platform.term
 
 local icons = {
-  dir = utf8.char(0xf413),
-  file = utf8.char(0xf15b),
-  up = utf8.char(0xfc35),
-  csv = utf8.char(0xf0ce),
-  sep = utf8.char(0xe0b1)
+  dir = icoload(0xf413, "D"),
+  file = icoload(0xf15b, " "),
+  up = icoload(0xfc35, "^"),
+  csv = icoload(0xf0ce, " "),
+  sep = icoload(0xe0b1, ">"),
+  pathend = icoload(0xe0b0, ""),
+  drive = icoload(0xf7c9, "")
 }
 
 local function dir()
@@ -67,7 +70,7 @@ local function dispath()
   local basefmt = "%{" .. baseclr .. "bg black}"
   local path = {basefmt, " "}
 
-  table.insert(path, utf8.char(0xf7c9))
+  table.insert(path, icons.drive)
   table.insert(path, " ")
   table.insert(path, cd:sub(1,1))
   cd = cd:sub(3,#cd)
@@ -83,7 +86,7 @@ local function dispath()
   table.insert(path, "bg ")
   table.insert(path, baseclr)
   table.insert(path, "}")
-  table.insert(path, utf8.char(0xe0b0))
+  table.insert(path, icons.pathend)
 
   return ansicolors(table.concat(path))
 end
