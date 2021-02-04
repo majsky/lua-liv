@@ -77,7 +77,7 @@ function zap.proto:generuj(pristroje)
     local tak = a:text() .. ">" .. tam:text()
     local onak = tam:text() .. ">" .. a:text()
     if index[tak] or index[onak] then
-      print(s.vygenerovana)
+  --    print(s.vygenerovana)
       return false
     end
 

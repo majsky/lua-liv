@@ -38,6 +38,14 @@ local map = swapkv({
   ["POT"] = "potencial"
 })
 
+local function odstranBordel(str)
+  str = str:match("[=%+-%.]*(.+)")
+  if skipp[str] then
+    return ""
+  end
+  return str or ""
+end
+
 function gan.process(head, lines)
   local lmap = {}
 
@@ -67,23 +75,44 @@ function gan.process(head, lines)
 
     local svorka = l.svorka
 
-    if #svorka > 0 then
       local pole = l.pole:sub(2, #l.pole)
       local skr = l.skrina:sub(2, #l.skrina)
       local pri = l.pristroj:sub(2, #l.pristroj)
+      local pri2 = l.pristroj2:match("%+%.?(.+)") or ""
+      local pri3 = l.pristroj3
+
+      if #pole > 0 and #skr > 0 and #pri > 0 then
+        cur.pole = pole
+        cur.skr = skr
+        cur.pri = pri
+        cur.pri2 = pri2
+        cur.pri3 = pri3
+      end
+
+      if #svorka > 0 then
 
       if not skipp[pri] then
 
         l.cpristroj = l.cpristroj:sub(2, #l.cpristroj)
 
-        if #pole > 0 and #skr > 0 and #pri > 0 then
-          cur.pole = pole
-          cur.skr = skr
-          cur.pri = pri
-        else
+        if #pole == 0 then
           pole = cur.pole
-          skr =  cur.skr
-          pri =  cur.pri
+        end
+
+        if #skr == 0 then
+          skr = cur.skr
+        end
+
+        if #pri == 0 then
+          pri = cur.pri
+        end
+
+        if #pri2 == 0 then
+          pri2 = cur.pri2
+        end
+
+        if #pri3 == 0 then
+          pri3 = cur.pri3
         end
 
         if not data[pole] then
@@ -101,19 +130,21 @@ function gan.process(head, lines)
         local pr = data[pole][skr][pri]
 
         local hasVal = false
-        local ldata = {}
-        for _, k in pairs({"pristroj2", "pristroj3", "svorka", "cpristroj", "cpristroj2", "cpristroj3", "csvorka", "prierez", "cpole", "cskrina", "potencial"}) do
-          if l[k]:match("[=%+-].+") then
-            ldata[k] = l[k]:sub(2)
-          else
-            ldata[k] = l[k]
-          end
+        local ldata = {
+          pristroj2 = pri2,
+          pristroj3 = pri3
+        }
+        for _, k in pairs({"svorka", "cpristroj", "cpristroj2", "cpristroj3", "csvorka", "prierez", "cpole", "cskrina", "potencial"}) do
+          ldata[k] = odstranBordel(l[k])
 
           if #l[k] > 0 then
             hasVal = true
           end
         end
 
+        if pri == "KC" then
+          print("kc")
+        end
         if string.sub(ldata.pristroj2, 1, 1) == "." then
           ldata.pristroj2 = ldata.pristroj2:sub(2, #ldata.pristroj2)
         end
