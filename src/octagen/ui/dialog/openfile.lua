@@ -103,7 +103,7 @@ end
 
 return function()
   local w, h = term.getsize()
-  local ww, wh = w - 28, h - 10
+  local ww, wh = w - 8, h - 4
 
   local win = window.new(4, 2, ww, wh):settitle("Vyber subor")
   local sel = 1

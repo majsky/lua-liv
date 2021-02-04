@@ -23,7 +23,7 @@ function console.getsize()
 end
 
 function console.curpos(x, y)
-  windcon.movecursor(x, y)
+  windcon.movecursor(x-1, y-1)
 end
 
 function console.curvisible(visible)
