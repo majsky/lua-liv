@@ -2,31 +2,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "lua-local",
+      "type": "emmylua_new",
       "request": "launch",
-      "name": "import",
-      "program": {
-        "lua": "C:/tools/share/luajit/luajit.exe",
-        "file": "src/main.lua"
-      },
-      "stopOnEntry": false,
-      "env": {
-        "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.1/?.lua;lua_modules/share/lua/5.1/?/init.lua;C:/tools/share/luajit/lua/?.lua;C:/tools/share/luajit/rocks/systree/share/lua/5.1/?.lua",
-        "LUA_CPATH": "lua_modules/lib/lua/5.1/?.dll;C:/tools/share/luajit/rocks/systree/lib/lua/5.1/?.dll"
-      }
-    },
-    {
-      "type": "lua-local",
-      "request": "launch",
-      "name": "Cur file",
-      "program": {
-        "lua": "C:/tools/share/luajit/luajit.exe",
-        "file": "${file}"
-      },
-      "env": {
-        "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.1/?.lua;lua_modules/share/lua/5.1/?/init.lua;C:/tools/share/luajit/lua/?.lua;C:/tools/share/luajit/rocks/systree/share/lua/5.1/?.lua",
-        "LUA_CPATH": "lua_modules/lib/lua/5.1/?.dll;C:/tools/share/luajit/rocks/systree/lib/lua/5.1/?.dll"
-      }
-    },
+      "name": "EmmyLua New Debug",
+      "host": "localhost",
+      "port": 9966,
+      "ext": [
+        ".lua",
+        ".lua.txt",
+        ".lua.bytes"
+      ],
+      
+      "ideConnectDebugger": false
+    }
   ],
 }

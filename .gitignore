@@ -5,3 +5,6 @@
 /luarocks.bat
 /lua.bat
 /workdir
+/ADA*
+/AEA*
+/jit
