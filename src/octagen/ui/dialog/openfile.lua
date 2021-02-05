@@ -76,6 +76,7 @@ local function tagged(tags, what)
 end
 
 return function()
+  local popd = lfs.currentdir()
   local w, h = term.getsize()
   local ww, wh = w - 8, h - 4
 
@@ -167,6 +168,6 @@ return function()
     end
   end
 
-  term.curvisible(true)
+  lfs.chdir(popd)
   return tags
 end
