@@ -3,8 +3,9 @@ local ansicolors = require("ansicolors")
 
 local colors = require("octagen.ui.skin.4bit")
 local window = require("octagen.ui.window")
-local platform = require("octagen.platform")
 local icoload = require("octagen.ui.icoload")
+local stringbuilder = require("octagen.utils.stringbuilder")
+local platform = require("octagen.platform")
 local term = platform.term
 
 local icons = {
@@ -68,27 +69,18 @@ local function dispath()
   local baseclr = colors.chooser.path
   local winbg = colors.window.body:match("(%S+)bg")
   local basefmt = "%{" .. baseclr .. "bg black}"
-  local path = {basefmt, " "}
-
-  table.insert(path, icons.drive)
-  table.insert(path, " ")
-  table.insert(path, cd:sub(1,1))
+  local path = stringbuilder.new(basefmt, " ")
+  path:add(icons.drive, " ", cd:sub(1,1))
   cd = cd:sub(3,#cd)
+
   if cd:find("\\") < #cd  then
     cd = cd:gsub("\\", string.format(" %s%s%s ", "%%{" .. baseclr  .. "bg " .. winbg .. "}",icons.sep, "%"..basefmt))
-    table.insert(path, cd)
-  else
-
+    path:add(cd)
   end
 
-  table.insert(path, " %{")
-  table.insert(path, winbg)
-  table.insert(path, "bg ")
-  table.insert(path, baseclr)
-  table.insert(path, "}")
-  table.insert(path, icons.pathend)
+  path:add("%{", winbg, "bg ", baseclr, "}", icons.pathend)
 
-  return ansicolors(table.concat(path))
+  return ansicolors(path:string())
 end
 
 local function tagged(tags, what)
