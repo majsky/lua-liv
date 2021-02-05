@@ -40,4 +40,10 @@ function canvas.proto:curpos(x, y)
   term.curpos(self.x + x, self.y + y)
 end
 
+function canvas.proto:write(...)
+  io.stdout:write(...)
+end
+
+canvas.full = canvas.new()
+
 return canvas

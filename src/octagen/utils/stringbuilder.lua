@@ -19,5 +19,12 @@ function sb.proto:string()
 end
 
 _sb.__tostring = sb.proto.string
+function sb.proto:len()
+  local len = 0
+  for k, v in pairs(self) do
+    len = len + #v
+  end
+  return len
+end
 
 return sb

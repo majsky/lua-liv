@@ -4,6 +4,7 @@ local ansicolors = require("ansicolors")
 local colors = require("octagen.ui.skin.4bit")
 local window = require("octagen.ui.window")
 local icoload = require("octagen.ui.icoload")
+local plpath = require("octagen.ui.plpath")
 local stringbuilder = require("octagen.utils.stringbuilder")
 local platform = require("octagen.platform")
 local term = platform.term
@@ -64,25 +65,6 @@ local function ext(path)
   return rev:sub(1,i-1):lower():reverse()
 end
 
-local function dispath()
-  local cd = lfs.currentdir()
-  local baseclr = colors.chooser.path
-  local winbg = colors.window.body:match("(%S+)bg")
-  local basefmt = "%{" .. baseclr .. "bg black}"
-  local path = stringbuilder.new(basefmt, " ")
-  path:add(icons.drive, " ", cd:sub(1,1))
-  cd = cd:sub(3,#cd)
-
-  if cd:find("\\") < #cd  then
-    cd = cd:gsub("\\", string.format(" %s%s%s ", "%%{" .. baseclr  .. "bg " .. winbg .. "}",icons.sep, "%"..basefmt))
-    path:add(cd)
-  end
-
-  path:add("%{", winbg, "bg ", baseclr, "}", icons.pathend)
-
-  return ansicolors(path:string())
-end
-
 local function tagged(tags, what)
   for _, path in pairs(tags) do
     if path == lfs.currentdir() .. platform.fs.separator .. what then
@@ -107,7 +89,7 @@ return function()
     win:clear()
 
     win:curpos(1, 1)
-    win:write(dispath())
+    win:write(plpath(lfs.currentdir(), "white"))
     for ln, fname in ipairs(cd) do
       if ln + 1>= wh then
         break
