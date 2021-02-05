@@ -23,7 +23,7 @@ return function (path, bg)
     p:add(path)
   end
 
-  p:add("%{", bg, "bg ", baseclr, "}", icons.pathend)
+  p:add(" %{", bg, "bg ", baseclr, "}", icons.pathend)
 
   return ansicolors(p:string())
 end

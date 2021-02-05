@@ -14,9 +14,6 @@ local icons = {
   file = icoload(0xf15b, " "),
   up = icoload(0xfc35, "^"),
   csv = icoload(0xf0ce, " "),
-  sep = icoload(0xe0b1, ">"),
-  pathend = icoload(0xe0b0, ""),
-  drive = icoload(0xf7c9, "")
 }
 
 local function dir()
