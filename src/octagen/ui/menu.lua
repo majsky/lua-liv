@@ -31,7 +31,6 @@ function menu.new(lines, opts)
   }, _menu)
 
 
-
   return o
 end
 
@@ -83,7 +82,7 @@ function menu.proto:update(key)
     end
 
   elseif key == "enter" then
-    self.options[self.current].action()
+    self.options[self.current]:action()
 
   end
 end

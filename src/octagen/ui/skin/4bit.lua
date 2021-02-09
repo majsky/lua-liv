@@ -9,6 +9,11 @@ return {
     path = "cyan"
   },
   main = {
+    tab = {
+      fg = "black",
+      bg = "magenta",
+      active = "blue"
+    },
     csv = {
       gan = "magenta",
       klo = "cyan"

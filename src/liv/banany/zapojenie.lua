@@ -156,7 +156,12 @@ function zap.proto:nacitajDoplnenia(path)
 
   for k, v in pairs(self.doplnene.prierezy) do
     local p, sv = k:match("-(.+):(.+)")
-    self:dajsvorku(p, sv).prierez = v
+    local svorka = self:dajsvorku(p, sv)
+    if svorka then
+      svorka.prierez = v
+    else
+      print("Nemam svorku " .. sv)
+    end
   end
 
   return self

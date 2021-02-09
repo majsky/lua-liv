@@ -1,4 +1,3 @@
-require("dbgload")
-local og = require("octagen")
+local uimain = require("octagen.ui.main")
 
-og.main(...)
+uimain(...)
