@@ -1,7 +1,7 @@
 local platform = require("octagen.platform")
 local icoload = require("octagen.ui.icoload")
 local menu = require("octagen.ui.menu")
-local input = require("octagen.ui.dialog.text")
+local input = require("octagen.ui.dialog.input")
 local stringbuilder = require("octagen.utils.stringbuilder")
 
 local vodice = {
@@ -46,8 +46,9 @@ local function gensvmenu(svorky)
         txt = gensvtxt(prp),
         svtxt = prp.svorka,
         action = function(self)
-          local np = input("Zadaj prierez", prp.prierez)
-
+          local npr = prp.prierez:match("(.+)mm")
+          local i = input:new("Zadaj prierez", npr)
+          local np = i:show()
           if np:sub(#np - 1, #np) ~= "mm" then
             if np:sub(#np) == "m" then
               np = np .. "m"

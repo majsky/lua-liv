@@ -1,3 +1,4 @@
+--TODO naportovať na nový systém dialógov
 local lfs = require("lfs")
 local ansicolors = require("ansicolors")
 
