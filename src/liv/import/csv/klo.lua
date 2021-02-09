@@ -28,7 +28,7 @@ local skipp = {
   ["RÁM"] = true
 }
 local function odstranBordel(str)
-  str = str:match("[=%+-%.]*(.+)")
+  str = str:match("[=%+-%.]*(.+)") or ""
   if skipp[str] then
     return ""
   end

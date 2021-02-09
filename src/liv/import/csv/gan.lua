@@ -79,7 +79,7 @@ function gan.process(head, lines)
       local skr = l.skrina:sub(2, #l.skrina)
       local pri = l.pristroj:sub(2, #l.pristroj)
       local pri2 = l.pristroj2:match("%+%.?(.+)") or ""
-      local pri3 = l.pristroj3
+      local pri3 = l.pristroj3:sub(2, #l.pristroj3)
 
       if #pole > 0 and #skr > 0 and #pri > 0 then
         cur.pole = pole
