@@ -83,10 +83,29 @@ function win.proto:clear()
   return self
 end
 
+local function printlen(str)
+  local state = 0
+  local len = 0
+  for i = 1, #str do
+    local c = str:sub(i,i)
+    if c == "%" and state == 0 then
+      state = 1
+    elseif c == "{" and state == 1 then
+      state = 2
+    elseif c == "}" and state == 2 then
+      state = 0
+    elseif state == 0 then
+      len = len + 1
+    end
+  end
+
+  return len
+end
+
 function win.proto:write(...)
   local str = table.concat({...})
 
-  if #str > (self.area.width - 2) then
+  if printlen(str) > (self.area.width - 2) then
     str = str:sub(1, self.area.width - 2)
   end
 
