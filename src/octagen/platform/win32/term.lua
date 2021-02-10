@@ -18,7 +18,7 @@ function console.getsize()
 
   if ansicon then
     local w, h = ansicon:match("%((%d+)x(%d+)%)")
-    return w, h
+    return tonumber(w), tonumber(h)
   end
 
   return windcon.size()
