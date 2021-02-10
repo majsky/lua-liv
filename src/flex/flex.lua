@@ -111,27 +111,20 @@ local function gen(main)
   local b64s = read(b64p):gsub("return base64\n", string.rep("--++", 50))
   table.insert(final, b64s)
 
-  table.insert(final, [[
+  table.insert(final, string.format([[
 
-  local requireraw = require
-  local cache = {}
-  function require(mod)
-    if cache[mod] then
-      return cache[mod]
-    end
-    if files[mod] then
-      local m, err = load(base64.decode(files[mod]), mod)
-      if m then
-        cache[mod] = m()
-        return cache[mod]
-      end
+  for name, mod in pairs(files) do
+    local mfn, err = load(base64.decode(mod), name)
+
+    if not mfn then
       error(err)
     end
-    return requireraw(mod)
+
+    package.preload[name] = mfn
   end
 
-  require("octagen.main")
-  ]])
+  require("%s")
+  ]], cfg.main))
 
   return table.concat(final)
 end
