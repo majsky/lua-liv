@@ -86,13 +86,13 @@ function banany.vyber(self)
                       local zap = zapojenie.new(adresa.new(npole, nskrina), d.data, klo)
                       local files = scandirs(npole, nskrina)
 
-                      if files["doplnenie.txt"] then
+                      if files and files["doplnenie.txt"] then
                         zap:nacitajDoplnenia(files["doplnenie.txt"])
                       end
 
                       local lspr = pristroje.new(zap)
 
-                      if files["pristroje.txt"] then
+                      if files and files["pristroje.txt"] then
                         lspr:nacitaj(files["pristroje.txt"])
                       end
 
