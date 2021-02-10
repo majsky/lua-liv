@@ -4,6 +4,16 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Prepare tools",
+            "type": "shell",
+            "windows": {
+                "command": "build-tools.bat"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
             "label": "Clean",
             "type": "shell",
             "windows": {
@@ -46,12 +56,14 @@
                 "args": [
                     "tools\\srlua.exe",
                     "build\\script.lua",
-                    "build\\bin\\octagen.exe"
+                    "build\\bin-%PROCESSOR_ARCHITECTURE%\\octagen.exe"
                 ],
             },
             "dependsOn":[
+                "Prepare tools",
                 "Clean & Flex"
             ],
+            "dependsOrder": "sequence",
             "options": {
                 "cwd": "${workspaceFolder}"
             },

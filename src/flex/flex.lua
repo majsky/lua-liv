@@ -44,7 +44,7 @@ local function fname(path)
 end
 local function cplib(from, name)
   local h = io.open(from, "rb")
-  local w = assert(io.open(cfg.dir .. "\\bin\\" .. name, "wb"))
+  local w = assert(io.open(cfg.dir .. "\\bin-" .. os.getenv("PROCESSOR_ARCHITECTURE") .. "\\" .. name, "wb"))
 
   w:write(h:read("*a"))
 
@@ -64,6 +64,7 @@ local function write(where, what)
   h:write(what)
   h:close()
 end
+
 
 local libs = {}
 local srcs = {}
@@ -137,8 +138,9 @@ end
 
 local flex = {}
 function flex.glue()
+  local bindir = cfg.dir .. "\\bin-" .. os.getenv("PROCESSOR_ARCHITECTURE")
   lfs.mkdir(cfg.dir)
-  lfs.mkdir(cfg.dir .. "\\bin")
+  lfs.mkdir(bindir)
 
   --  SCRIPT
   logh = io.open(cfg.dir .. "\\build.log", "a")
@@ -189,7 +191,7 @@ end
 function flex.clean()
   clean("build")
   lfs.rmdir(cfg.dir)
-  print("\n\nThe damage has been removed\n")
+  print("\n\nThat's a lot of damage!\n")
 end
 
 local args = {...}
