@@ -2,7 +2,7 @@ local lfs = require("lfs")
 local base64 = require("base64")
 
 local cfg = {
-  LUA = "tools\\lua-5.3.dll",
+  LUA = "tools\\lua5.3.dll",
   main = "octagen.main",
   resdir = "src",
   dir = "build",

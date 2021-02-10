@@ -32,16 +32,16 @@ if exist lua.o del lua.o
 ren lua.obj lua.o
 if exist luac.o del luac.o
 ren luac.obj luac.o
-link /DLL /IMPLIB:lua-%LUAV%.lib /OUT:lua-%LUAV%.dll *.obj
-lib /OUT:lua-%LUAV%-static.lib *.obj
-link /OUT:lua-%LUAV%.exe lua.o lua-%LUAV%.lib
-link /OUT:luac-%LUAV%.exe luac.o lua-%LUAV%-static.lib
+link /DLL /IMPLIB:lua%LUAV%.lib /OUT:lua%LUAV%.dll *.obj
+lib /OUT:lua%LUAV%-static.lib *.obj
+link /OUT:lua%LUAV%.exe lua.o lua-%LUAV%.lib
+link /OUT:luac%LUAV%.exe luac.o lua-%LUAV%-static.lib
 popd
 popd
 
 robocopy lua\lua-%LUAV%.%LUAR%\src include lua.h luaconf.h lualib.h lauxlib.h lua.hpp
-robocopy lua\lua-%LUAV%.%LUAR%\build %cd% lua-%LUAV%.exe luac-%LUAV%.exe lua-%LUAV%.dll"
-robocopy lua\lua-%LUAV%.%LUAR%\build lib lua-%LUAV%.lib lua-%LUAV%-static.lib
+robocopy lua\lua-%LUAV%.%LUAR%\build %cd% lua%LUAV%.exe luac%LUAV%.exe lua%LUAV%.dll"
+robocopy lua\lua-%LUAV%.%LUAR%\build lib lua%LUAV%.lib lua%LUAV%-static.lib
 
 rd /S /Q lua
 
@@ -53,7 +53,7 @@ bitsadmin /transfer "srlua-102" /priority high "http://webserver2.tecgraf.puc-ri
 7z x -o%cd% "%cd%\srlua-102.tar"
 
 cl srlua-102\srglue.c
-cl /I ..\include ..\lib\lua-5.3.lib srlua-102\srlua.c
+cl /I ..\include ..\lib\lua5.3.lib srlua-102\srlua.c
 popd
 
 move /Y srlua\srglue.exe srglue.exe
