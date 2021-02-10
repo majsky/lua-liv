@@ -4,90 +4,63 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Run",
+            "label": "Clean",
             "type": "shell",
-            "command": "C:/tools/lua-5.2/bin/lua.exe",
-            "args": [
-                "${file}"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}",
-                "env": {
-                    "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.2/?.lua;lua_modules/share/lua/5.2/?/init.lua",
-                    "LUA_CPATH": "lua_modules/lib/lua/5.2/?.dll"
-                }
+            "windows": {
+                "command": "lua.bat",
             },
-            "problemMatcher": []
-        }, {
-            "label": "Debug",
-            "type": "shell",
-            "command": "START",
-            "isBackground": false,
-            "args": [
-                "Debug: ${file}",
-                "/D", "${workspaceFolder}",
-                "C:/tools/lua-5.2/bin/lua.exe",
-                "src/dbglaunch.lua",
-                "${file}"
-            ],
             "options": {
-                "cwd": "${workspaceFolder}",
-                "env": {
-                    "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.2/?.lua;lua_modules/share/lua/5.2/?/init.lua",
-                    "LUA_CPATH": "lua_modules/lib/lua/5.2/?.dll",
-                    "LUA_DEBUGGER_EMMY": "32"
-                }
+                "cwd": "${workspaceFolder}"
             },
-            "problemMatcher": []
-        },{
-            "label": "Debug livstd",
-            "type": "shell",
-            "command": "START",
             "runOptions": {
                 "instanceLimit": 1
             },
-            "promptOnClose": true,
             "args": [
-                "Debug: livstd",
-                "/D", "${workspaceFolder}",
-                "C:/tools/lua-5.2/bin/lua.exe",
-                "src/dbglaunch.lua",
-                "src/liv/std.lua"
+                "src/flex/flex.lua",
+                "clean"
             ],
-            "options": {
-                "cwd": "${workspaceFolder}",
-                "env": {
-                    "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.2/?.lua;lua_modules/share/lua/5.2/?/init.lua",
-                    "LUA_CPATH": "lua_modules/lib/lua/5.2/?.dll",
-                    "LUA_DEBUGGER_EMMY": "32"
-                }
-            },
+            "problemMatcher": []
         },{
-            "label": "Dbg-cemu",
-            "type": "process",
-            "command": "C:/Program Files/ConEmu/ConEmu/ConEmuC.exe",
-            "runOptions": {
-                "instanceLimit": 1,
-
+            "label": "Clean & Flex",
+            "type": "shell",
+            "windows": {
+                "command": "lua.bat",
             },
-            "promptOnClose": true,
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            },
             "args": [
-                "-ATTACH",
-                "-ROOT",
-                "lua.exe",
-                "Lua debug Enviroment",
-                "C:/tools/lua-5.2/bin/lua.exe",
-                "-e",
-                "dofile([[src/dbglaunch.lua]])",
-                "src/genKable.lua"
+                "src/flex/flex.lua",
+                "clean",
+                "glue"
+            ],
+            "problemMatcher": []
+        },{
+            "label": "srGlue",
+            "type": "shell",
+            "windows": {
+                "command": "tools\\srglue.exe",
+                "args": [
+                    "tools\\srlua.exe",
+                    "build\\script.lua",
+                    "build\\bin\\octagen.exe"
+                ],
+            },
+            "dependsOn":[
+                "Clean & Flex"
             ],
             "options": {
-                "cwd": "${workspaceFolder}",
-                "env": {
-                    "LUA_PATH": "src/?.lua;src/?/init.lua;lua_modules/share/lua/5.2/?.lua;lua_modules/share/lua/5.2/?/init.lua",
-                    "LUA_CPATH": "lua_modules/lib/lua/5.2/?.dll",
-                    "LUA_DEBUGGER_EMMY": "32"
-                }
+                "cwd": "${workspaceFolder}"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
             },
             "problemMatcher": []
         }

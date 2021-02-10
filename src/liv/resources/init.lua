@@ -12,6 +12,7 @@ function d.getPath(f)
 
   if not cache.base then
     local tf = package.searchpath("liv.resources", package.path)
+    if not tf then return f end
     cache.base = tf:gsub("init.lua", _TOKEN)
   end
 

@@ -33,10 +33,10 @@ local function typ(nazov)
 end
 
 local typy = {
-    typ("chranic"),
-    typ("istic"),
-    typ("bezne"),
-    typ("popisky")
+    setmetatable(require("liv.gen.pristroje.typy.chranic"), _proto),
+    setmetatable(require("liv.gen.pristroje.typy.istic"), _proto),
+    setmetatable(require("liv.gen.pristroje.typy.bezne"), _proto),
+    setmetatable(require("liv.gen.pristroje.typy.popisky"), _proto),
 }
 
 local _typy = {
