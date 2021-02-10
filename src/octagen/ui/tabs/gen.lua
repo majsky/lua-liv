@@ -177,19 +177,18 @@ function banany.menu(hme)
           handle:close()
         end
 
-        local devs = {}
-        for p in pairs(banany.pristroje.db) do
-          table.insert(devs, p)
-        end
-
-        table.sort(devs)
-
         local hnd = io.open(string.format("%s%spristroje.csv", dir, platform.fs.separator), "w")
-        for i = 1, #devs, 4 do
-          for j = i, math.min(#devs, i + 3) do
-            hnd:write(devs[j], ";")
+        for i = 1, #banany.zap.pristroje, 4 do
+          for j = i, math.min(#banany.zap.pristroje, i + 3) do
+            hnd:write(banany.zap.pristroje[j], ";")
           end
           hnd:write("\n")
+        end
+        hnd:close()
+
+        hnd = io.open(string.format("%s%ssvorkovnice.csv", dir, platform.fs.separator), "w")
+        for i = 1, #banany.zap.svorkovnice do
+          hnd:write(banany.zap.svorkovnice[i], "\n")
         end
         hnd:close()
 
