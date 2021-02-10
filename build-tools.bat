@@ -34,8 +34,8 @@ if exist luac.o del luac.o
 ren luac.obj luac.o
 link /DLL /IMPLIB:lua%LUAV%.lib /OUT:lua%LUAV%.dll *.obj
 lib /OUT:lua%LUAV%-static.lib *.obj
-link /OUT:lua%LUAV%.exe lua.o lua-%LUAV%.lib
-link /OUT:luac%LUAV%.exe luac.o lua-%LUAV%-static.lib
+link /OUT:lua%LUAV%.exe lua.o lua%LUAV%.lib
+link /OUT:luac%LUAV%.exe luac.o lua%LUAV%-static.lib
 popd
 popd
 
