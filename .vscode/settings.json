@@ -7,5 +7,10 @@
         "titleBar.activeBackground": "#2229B3",
         "activityBar.background": "#191E80",
         "titleBar.activeForeground": "#FBFBFE"
-    }
+    },
+    "indentRainbow.colors": [
+        "#c800ff18",
+        "#ff83f918",
+        "#885ffa18",
+    ]
 }
