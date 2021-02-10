@@ -12,8 +12,7 @@
             "options": {
                 "cwd": "${workspaceFolder}"
             }
-        },
-        {
+        },{
             "label": "Clean",
             "type": "shell",
             "windows": {
@@ -74,6 +73,24 @@
                 "kind": "build",
                 "isDefault": true
             },
+            "problemMatcher": []
+        },{
+            "label": "package",
+            "type": "shell",
+            "windows":{
+                "command": "7z",
+                "args": [
+                    "a",
+                    "..\\dist\\octagen-%PROCESSOR_ARCHITECTURE%.zip",
+                    "*"
+                ],
+                "options": {
+                    "cwd": "${workspaceFolder}/build/bin-${env:PROCESSOR_ARCHITECTURE}"
+                }
+            },
+            "dependsOn": [
+                "srGlue"
+            ],
             "problemMatcher": []
         }
     ]
