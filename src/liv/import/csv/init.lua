@@ -1,3 +1,4 @@
+local ftcsv = require("ftcsv")
 local buffstr = require("liv.import.bufferedstream")
 local chcp = require("liv.import.charset")
 local convstr = require("liv.import.charset.stream")
@@ -50,21 +51,64 @@ local function trim(s)
   return s:match'^%s*(.*%S)' or ''
 end
 
-function csvreader.read(path)
-  local fh = io.open(path, "r")
-  local br = buffstr.new(fh)
-  local cs = convstr.new(br, "CP1250")
-  local head = csvreader.tokenize(cs:read("*l"))
-  local line = cs:read("*l")
-  local tkns = {}
-  repeat
-    local ltkns = csvreader.tokenize(line)
-    table.insert(tkns, ltkns)
-    line = cs:read("*l")
-  until not line
-  cs.base.base:close()
+local function grenamef(map)
+  return function(s)
+    local ts = trim(s)
+    return map[ts] or ts
+  end
+end
 
-  return csvreader.parse(head, tkns)
+local function chceckstream(stream)
+  local head = csvreader.tokenize(stream:read("*l"))
+  if csvreader.gettype(head) then
+    return true
+  end
+  return false
+end
+
+local function odstranBordel(str)
+  str = str:match("[=%+-%.]*(%S+)") or ""
+  return str
+end
+
+function csvreader.read(path)
+  local csv = nil
+  local typ = nil
+  local stream = io.open(path, "r")
+  if chceckstream(stream) then
+    stream:close()
+    stream = io.open(path, "r")
+
+    local txt = stream:read("*a")
+
+    local htxt = txt:match("[^\r\n]+")
+    typ = csvreader.gettype(csvreader.tokenize(htxt))
+    csv = ftcsv.parse(path, ";", {
+      headerFunc = grenamef(csvreader.types[typ].map)
+    })
+  else
+    stream:close()
+    stream = convstr.new(io.open(path, "r"), "CP1250")
+    local txt = stream:read("*a")
+    stream:close()
+    local htxt = txt:match("[^\r\n]+")
+    typ = csvreader.gettype(csvreader.tokenize(htxt))
+    csv = ftcsv.parse(txt, ";", {
+      loadFromString = true,
+      headerFunc = grenamef(csvreader.types[typ].map),
+    })
+  end
+
+  local ncsv = {}
+
+  for ln, l in ipairs(csv) do
+    ncsv[ln] = {}
+    for k, v in pairs(l) do
+      ncsv[ln][k] = odstranBordel(v)
+    end
+  end
+
+  return csvreader.types[typ].process(ncsv), typ
 end
 
 function csvreader.tokenize(str)

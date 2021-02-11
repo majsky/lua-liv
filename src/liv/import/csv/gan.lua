@@ -19,67 +19,20 @@ local skipp = {
   ["RÁM"] = true
 }
 
-
-
-local map = swapkv({
-  ["PŘÍSTROJ ="] = "pole",
-  ["PŘÍSTROJ +"] = "skrina",
-  ["PŘÍSTROJ -"] = "pristroj",
-  ["PŘÍSTROJ -1"] = "pristroj2",
-  ["PŘÍSTROJ -AN"] = "pristroj3",
-  ["PŘÍSTROJ :1"] =  "svorka",
-  ["PRŮŘEZ"] = "prierez",
-  ["CÍL ="] = "cpole",
-  ["CÍL +"] = "cskrina",
-  ["CÍL -"] = "cpristroj",
-  ["CÍL -1"] = "cpristroj2",
-  ["CÍL -AN"] = "cpristroj3",
-  ["CÍL :1"] = "csvorka",
-  ["POT"] = "potencial"
-})
-
-local function odstranBordel(str)
-  str = str:match("[=%+-%.]*(.+)")
-  if skipp[str] then
-    return ""
-  end
-  return str or ""
-end
-
-function gan.process(head, lines)
-  local lmap = {}
-
-  for k, v in pairs(map) do
-    for _k, _v in pairs(head) do
-      if _v == v then
-        lmap[k] = _k
-        break
-      end
-    end
-  end
-
-  local __linemeta = {
-    __index = function(t, k)
-      local uk = lmap[k]
-      if uk then
-        return rawget(t, uk)
-      end
-    end
-  }
-
+function gan.process(lines)
   local data = {}
   local cur = {}
   local lastPr = "-"
   for ln = 1, #lines do
-    local l = setmetatable(lines[ln], __linemeta)
+    local l = lines[ln]
 
     local svorka = l.svorka
 
-      local pole = l.pole:sub(2, #l.pole)
-      local skr = l.skrina:sub(2, #l.skrina)
-      local pri = l.pristroj:sub(2, #l.pristroj)
-      local pri2 = l.pristroj2:match("%+%.?(.+)") or ""
-      local pri3 = l.pristroj3:sub(2, #l.pristroj3)
+      local pole = l.pole
+      local skr = l.skrina
+      local pri = l.pristroj
+      local pri2 = l.pristroj2
+      local pri3 = l.pristroj3
 
       if #pole > 0 and #skr > 0 and #pri > 0 then
         cur.pole = pole
@@ -93,7 +46,7 @@ function gan.process(head, lines)
 
       if not skipp[pri] then
 
-        l.cpristroj = l.cpristroj:sub(2, #l.cpristroj)
+        l.cpristroj = l.cpristroj
 
         if #pole == 0 then
           pole = cur.pole
@@ -135,16 +88,13 @@ function gan.process(head, lines)
           pristroj3 = pri3
         }
         for _, k in pairs({"svorka", "cpristroj", "cpristroj2", "cpristroj3", "csvorka", "prierez", "cpole", "cskrina", "potencial"}) do
-          ldata[k] = odstranBordel(l[k])
+          ldata[k] = l[k]
 
           if #l[k] > 0 then
             hasVal = true
           end
         end
 
-        if pri == "KC" then
-          print("kc")
-        end
         if string.sub(ldata.pristroj2, 1, 1) == "." then
           ldata.pristroj2 = ldata.pristroj2:sub(2, #ldata.pristroj2)
         end
@@ -186,5 +136,21 @@ function gan.process(head, lines)
 end
 
 gan.headers = {"PŘÍSTROJ =", "PŘÍSTROJ +", "PŘÍSTROJ -", "PŘÍSTROJ -1", "PŘÍSTROJ -AN", "PŘÍSTROJ :1", "PRŮŘEZ", "CÍL =", "CÍL +", "CÍL -", "CÍL -1", "CÍL -AN", "CÍL :1"}
+gan.map = {
+  ["PŘÍSTROJ ="] = "pole",
+  ["PŘÍSTROJ +"] = "skrina",
+  ["PŘÍSTROJ -"] = "pristroj",
+  ["PŘÍSTROJ -1"] = "pristroj2",
+  ["PŘÍSTROJ -AN"] = "pristroj3",
+  ["PŘÍSTROJ :1"] =  "svorka",
+  ["PRŮŘEZ"] = "prierez",
+  ["CÍL ="] = "cpole",
+  ["CÍL +"] = "cskrina",
+  ["CÍL -"] = "cpristroj",
+  ["CÍL -1"] = "cpristroj2",
+  ["CÍL -AN"] = "cpristroj3",
+  ["CÍL :1"] = "csvorka",
+  ["POT"] = "potencial"
+}
 
 return gan

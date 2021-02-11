@@ -1,25 +1,25 @@
 local bnn = require("liv.gen.banany")
 local klo = {}
 
-local map = {
-  ["lpole"] = "EXTERNÍ =",
-  ["lskrina"] = "EXTERNÍ +",
-  ["lpristroj"] = "EXTERNÍ -",
-  ["lpristroj1"] = "EXTERNÍ -1",
-  ["lpristroj2"] = "EXTERNÍ -AN",
-  ["lsvorka"] = "EXTERNÍ :1",
-  ["pole"] = "SVORKOVNICE =",
-  ["skrina"] = "SVORKOVNICE +",
-  ["svorkovnica"] = "SVORKOVNICE -KL",
-  ["svorkovnica1"] = "SVORKOVNICE -1",
-  ["svorkovnica2"] = "SVORKOVNICE -AN",
-  ["svorka"] = "SVORKA :1",
-  ["rpole"] = "INTERNÍ =",
-  ["rskrina"] = "INTERNÍ +",
-  ["rpristroj"] = "INTERNÍ -",
-  ["rpristroj1"] = "INTERNÍ -1",
-  ["rpristroj2"] = "INTERNÍ -AN",
-  ["rsvorka"] = "INTERNÍ :1",
+klo.map = {
+  ["EXTERNÍ ="]       = "lpole",
+  ["EXTERNÍ +"]       = "lskrina",
+  ["EXTERNÍ -"]       = "lpristroj",
+  ["EXTERNÍ -1"]      = "lpristroj1",
+  ["EXTERNÍ -AN"]     = "lpristroj2",
+  ["EXTERNÍ :1"]      = "lsvorka",
+  ["SVORKOVNICE ="]   = "pole",
+  ["SVORKOVNICE +"]   = "skrina",
+  ["SVORKOVNICE -KL"] = "svorkovnica",
+  ["SVORKOVNICE -1"]  = "svorkovnica1",
+  ["SVORKOVNICE -AN"] = "svorkovnica2",
+  ["SVORKA :1"]       = "svorka",
+  ["INTERNÍ ="]       = "rpole",
+  ["INTERNÍ +"]       = "rskrina",
+  ["INTERNÍ -"]       = "rpristroj",
+  ["INTERNÍ -1"]      = "rpristroj1",
+  ["INTERNÍ -AN"]     = "rpristroj2",
+  ["INTERNÍ :1"]      = "rsvorka",
 }
 
 local skipp = {
@@ -49,44 +49,24 @@ local function store(t, v, ...)
   table.insert(ctx, v)
 end
 
-function klo.process(head, lines)
-  local lmap = {}
-
-  for k, v in pairs(map) do
-    for _k, _v in pairs(head) do
-      if _v == v then
-        lmap[k] = _k
-        break
-      end
-    end
-  end
-
-  local __linemeta = {
-    __index = function(t, k)
-      local uk = lmap[k]
-      if uk then
-        return rawget(t, uk)
-      end
-    end
-  }
-
+function klo.process(lines)
   local data = {}
   for ln = 1, #lines do
-    local l = setmetatable(lines[ln], __linemeta)
+    local l = lines[ln]
 
     if #l.svorka > 0 then
       if l.pole == l.lpole and l.skrina == l.lskrina then
         local ld = {
-          pristroj = odstranBordel(l.svorkovnica),
-          pristroj2 = odstranBordel(l.svorkovnica1),
-          pristroj3 = odstranBordel(l.svorkovnica2),
+          pristroj = l.svorkovnica,
+          pristroj2 = l.svorkovnica1,
+          pristroj3 = l.svorkovnica2,
           svorka = l.svorka,
-          cpristroj = odstranBordel(l.lpristroj),
-          cpristroj2 = odstranBordel(l.lpristroj1),
-          cpristroj3 = odstranBordel(l.lpristroj2),
+          cpristroj = l.lpristroj,
+          cpristroj2 = l.lpristroj1,
+          cpristroj3 = l.lpristroj2,
           csvorka = l.lsvorka,
-          cpole = odstranBordel(l.lpole),
-          cskrina = odstranBordel(l.lskrina),
+          cpole = l.lpole,
+          cskrina = l.lskrina,
           smer = bnn.LAVY,
           obsadena = true
         }
@@ -98,16 +78,16 @@ function klo.process(head, lines)
 
       if l.pole == l.rpole and l.skrina == l.rskrina then
         local ld = {
-          pristroj = odstranBordel(l.svorkovnica),
-          pristroj2 = odstranBordel(l.svorkovnica1),
-          pristroj3 = odstranBordel(l.svorkovnica2),
+          pristroj = l.svorkovnica,
+          pristroj2 = l.svorkovnica1,
+          pristroj3 = l.svorkovnica2,
           svorka = l.svorka,
-          cpristroj = odstranBordel(l.rpristroj),
-          cpristroj2 = odstranBordel(l.rpristroj1),
-          cpristroj3 = odstranBordel(l.rpristroj2),
+          cpristroj = l.rpristroj,
+          cpristroj2 = l.rpristroj1,
+          cpristroj3 = l.rpristroj2,
           csvorka = l.rsvorka,
-          cpole = odstranBordel(l.rpole),
-          cskrina = odstranBordel(l.rskrina),
+          cpole = l.rpole,
+          cskrina = l.rskrina,
           smer = bnn.PRAVY,
           obsadena = true
         }
