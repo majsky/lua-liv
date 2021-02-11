@@ -17,6 +17,28 @@ local gen = {
   icon = icoload(0xfc73)
 }
 
+local function _exists(what, where)
+  for item in lfs.dir(where) do
+    if item == what then
+      return true
+    end
+  end
+
+  return false
+end
+
+local function mkdirs(...)
+  local path = stringbuilder.new(".")
+  for _, dir in ipairs({...}) do
+    if not _exists(dir, path:string()) then
+      lfs.mkdir(path:string() .. platform.fs.separator .. dir)
+    end
+
+    path:add(platform.fs.separator, dir)
+  end
+  return path:string()
+end
+
 local function madata(ake, pocet)
   local n = 0
   for k, v in pairs(udaje.data) do
@@ -51,6 +73,7 @@ local function scandirs(pole, skrina)
     end
   end
 end
+
 
 local focus = 1
 local menus = {}
@@ -96,6 +119,7 @@ function banany.vyber(self)
                         lspr:nacitaj(files["pristroje.txt"])
                       end
 
+                      mkdirs(npole, nskrina, "banany")
                       tpris(zap, lspr)
                       tvodice(zap)
                       banany.zap = zap
@@ -121,27 +145,6 @@ function banany.vyber(self)
   end
 end
 
-local function _exists(what, where)
-  for item in lfs.dir(where) do
-    if item == what then
-      return true
-    end
-  end
-
-  return false
-end
-
-local function mkdirs(...)
-  local path = stringbuilder.new(".")
-  for _, dir in ipairs({...}) do
-    if not _exists(dir, path:string()) then
-      lfs.mkdir(path:string() .. platform.fs.separator .. dir)
-    end
-
-    path:add(platform.fs.separator, dir)
-  end
-  return path:string()
-end
 
 function banany.reset(bme)
   return function(self)
