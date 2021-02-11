@@ -123,7 +123,7 @@ local function gen(main)
     package.preload[name] = mfn
   end
 
-  require("%s")
+  package.preload["%s"](...)
   ]], cfg.main))
 
   return table.concat(final)
@@ -190,7 +190,9 @@ end
 local args = {...}
 for i, arg in ipairs(args) do
   local cmd, param = arg:match("([a-z]+)%(?([^%)]*)%)?")
-  print("[[".. cmd:upper() .."]]")
-  flex[cmd](param)
-  print()
+  if flex[cmd] then
+    print("[[".. cmd:upper() .."]]")
+    flex[cmd](param)
+    print()
+  end
 end
