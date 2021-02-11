@@ -1,4 +1,5 @@
-local term = require("octagen.platform").term
+local platform = require("octagen.platform")
+local term = platform.term
 local icoload = require("octagen.ui.icoload")
 local menu = require("octagen.ui.menu")
 local stringbuilder = require("octagen.utils.stringbuilder")
@@ -28,7 +29,7 @@ local function gentab(zapojenie, zpri)
   local function _focus2()
     focus = 2
   end
-  
+
   local function genmenu()
     local m = menu.new(term.height() - 2, {})
     local devs = {}
@@ -71,6 +72,8 @@ local function gentab(zapojenie, zpri)
         local npr = string.match(opt.txt, "(%S+)%s+.+%s*")
 
         zpri.db[npr] = def
+        zpri:uloz(string.format("%s%s%s%spristroje.txt", zapojenie.pole, platform.fs.separator, zapojenie.skrina, platform.fs.separator))
+
         mdev = genmenu()
         mdev.current = cur
         focus = 1
