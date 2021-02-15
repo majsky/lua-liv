@@ -4,6 +4,7 @@ local stringbuilder = require("octagen.utils.stringbuilder")
 local colors = require("octagen.ui.skin.4bit")
 local canvas = require("octagen.ui.canvas")
 local term = require("octagen.platform").term
+---@type Menu
 local menu = {proto={}}
 local _menu = {__index=menu.proto}
 
@@ -21,9 +22,17 @@ local function cptbl(t)
   return n
 end
 
-function menu.new(lines, opts)
+---@param menuitems MenuItem[]
+---@return Menu
+function menu.new(lines, menuitems)
+  ---@class Menu
+  ---@field options MenuItem[]
+  ---@field current integer
+  ---@field style table
+  ---@field height integer
+  ---@field scroll integer
   local o = setmetatable({
-    options = opts or {},
+    options = menuitems or {},
     current = 1,
     style = cptbl(colors.menu),
     height = lines,
@@ -34,6 +43,9 @@ function menu.new(lines, opts)
   return o
 end
 
+---@param x integer
+---@param y integer
+---@param nofocus boolean
 function menu.proto:draw(x, y, nofocus)
   local w, h = term.getsize()
   local canvas = self.canvas or canvas.full
@@ -48,7 +60,14 @@ function menu.proto:draw(x, y, nofocus)
       sb:add(self.style.bg, "bg ", self.style.fg)
     end
 
-    sb:add("}", opt.txt)
+    sb:add("}")
+
+    if opt.gettext then
+      sb:add(opt:gettext())
+    else
+      sb:add(opt.txt)
+    end
+
     canvas:write(ansicolors(sb:string()))
     showing = 1 + showing
 
@@ -56,12 +75,16 @@ function menu.proto:draw(x, y, nofocus)
       break
     end
   end
+
+  canvas:flush()
 end
 
+---@param canvas Canvas
 function menu.proto:setcanvas(canvas)
   self.canvas = canvas
 end
 
+---@param key string
 function menu.proto:update(key)
   if key == "up" then
     if self.current > 1 then
@@ -85,6 +108,11 @@ function menu.proto:update(key)
     self.options[self.current]:action()
 
   end
+end
+
+---@param item MenuItem
+function menu.proto:add(item)
+  table.insert(self.options, item)
 end
 
 return menu
