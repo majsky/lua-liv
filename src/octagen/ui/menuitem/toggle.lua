@@ -5,8 +5,8 @@ local icoload = require("octagen.ui.icoload")
 local tmi = class.new("octagen.ui.menuitem.basic")
 
 tmi.icons = {
-  [true] = icoload(0xf631, "A"),
-  [false] = icoload(0xf630, "N")
+  [true] = icoload(0xf631, "X"),
+  [false] = icoload(0xf630, " ")
 }
 
 function tmi:init(txt, value)

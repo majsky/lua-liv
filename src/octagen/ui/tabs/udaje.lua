@@ -1,6 +1,7 @@
 local import = require("liv.import")
 
 local dopen = require("octagen.ui.dialog.openfile")
+local ddel = require("octagen.ui.dialog.delete")
 local term = require("octagen.platform").term
 local menu = require("octagen.ui.menu")
 local icoload = require("octagen.ui.icoload")
@@ -36,7 +37,30 @@ local m = menu.new(term.height() - 2, {
   },
   {
     txt = "Odstran...",
-    action = os.exit
+    action = function()
+      local d = {}
+      for k, v in pairs(udaje.data) do
+        table.insert(d, string.format("%s", v.path))
+      end
+
+      local diag = ddel:new(d)
+      local todel = diag:show()
+
+      for _, dlt in pairs(todel) do
+        local k = 0
+        for _k, v in pairs(udaje.data) do
+          if v.path == dlt then
+            k = _k
+            break
+          end
+        end
+
+        if k > 0 then
+          udaje.data[k] = nil
+        end
+      end
+
+    end
   }
 })
 

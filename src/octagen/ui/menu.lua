@@ -115,4 +115,11 @@ function menu.proto:add(item)
   table.insert(self.options, item)
 end
 
+function menu.proto:setinwindow()
+  local bg, fg = colors.window.body:match("([a-z]+)bg ([a-z]+)")
+
+  self.style.bg = bg
+  self.style.fg = fg
+end
+
 return menu
