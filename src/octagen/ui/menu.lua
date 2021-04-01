@@ -107,6 +107,8 @@ function menu.proto:update(key)
   elseif key == "enter" then
     self.options[self.current]:action()
 
+  elseif self.options[self.current].onKey then
+    self.options[self.current]:onKey(key)
   end
 end
 

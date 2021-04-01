@@ -10,6 +10,8 @@ local vodice = {
   }
 }
 
+local _BEZNE_PRIEREZY = {"1", "1,5", "2,5", "4", "6"}
+
 local _tabmt = {
   __index = vodice.proto
 }
@@ -30,7 +32,7 @@ local function gensvtxt(svorka)
   ciel:add(svorka.csvorka)
 
   local txt = stringbuilder.new(svorka.svorka, string.rep(" ", thw - #svorka.svorka), ciel:string())
-  txt:add(string.rep(" ", tw - #svorka.prierez - ciel:len() - thw), svorka.prierez)
+  txt:add(string.rep(" ", tw - (svorka.prierez and #svorka.prierez or 0) - ciel:len() - thw), svorka.prierez)
 
   return txt:string()
 end
@@ -59,6 +61,33 @@ local function gensvmenu(svorky)
 
           prp.prierez = np
           self.txt = gensvtxt(prp)
+        end,
+
+        onKey = function(self, key) -- 43 + / 45 -
+          local prindex = 0
+          for k, v in ipairs(_BEZNE_PRIEREZY) do
+            if prp.prierez == v .. "mm" then
+              prindex = k
+              break
+            end
+          end
+
+          if key == 43 then
+            prindex = prindex + 1
+
+            if prindex <= #_BEZNE_PRIEREZY then
+              prp.prierez = _BEZNE_PRIEREZY[prindex] .. "mm"
+              self.txt = gensvtxt(prp)
+            end
+
+          elseif key == 45 then
+            prindex = prindex - 1
+
+            if prindex > 0 then
+              prp.prierez = _BEZNE_PRIEREZY[prindex] .. "mm"
+              self.txt = gensvtxt(prp)
+            end
+          end
         end
       })
     end
