@@ -10,16 +10,30 @@ local vodice = {
   }
 }
 
-local _BEZNE_PRIEREZY = {"1", "1,5", "2,5", "4", "6"}
+local _BEZNE_PRIEREZY = {"0", "1", "1,5", "2,5", "4", "6"}
 
 local _tabmt = {
   __index = vodice.proto
 }
 
-local function gensvtxt(svorka)
+local function gensvtxt(svorka, zapojenie)
   local tw = math.floor(platform.term.width() / 6)
   local thw = math.floor(tw / 4)
-  local ciel = stringbuilder.new(svorka.cpristroj, ":")
+
+  local pr = svorka.prierez
+
+  if not pr then
+    for k, sv in pairs(zapojenie.data[svorka.cpristroj]) do
+      if sv.csvorka == svorka.svorka then
+        if sv.cpristroj == svorka.pristroj and sv.csvorka == svorka.svorka then
+          pr = sv.prierez
+          break
+        end
+      end
+    end
+  end
+
+  local ciel = stringbuilder.new(pr and "" or "%{red}", svorka.cpristroj, ":")
 
   if #svorka.cpristroj2 > 0 then
     ciel:add(svorka.cpristroj2, "/")
@@ -32,12 +46,12 @@ local function gensvtxt(svorka)
   ciel:add(svorka.csvorka)
 
   local txt = stringbuilder.new(svorka.svorka, string.rep(" ", thw - #svorka.svorka), ciel:string())
-  txt:add(string.rep(" ", tw - (svorka.prierez and #svorka.prierez or 0) - ciel:len() - thw), svorka.prierez)
+  txt:add(string.rep(" ", tw - (svorka.prierez and #svorka.prierez or 0) - ciel:len() - thw), pr)
 
   return txt:string()
 end
 
-local function gensvmenu(svorky)
+local function gensvmenu(svorky, zapojenie)
   local svopts = {}
   local sv = {}
 
@@ -45,7 +59,7 @@ local function gensvmenu(svorky)
     local prp = svorky[i]
     if prp.obsadena then
       table.insert(svopts, {
-        txt = gensvtxt(prp),
+        txt = gensvtxt(prp, zapojenie),
         svtxt = prp.svorka,
         action = function(self)
           local npr = prp.prierez:match("(.+)mm")
@@ -60,10 +74,10 @@ local function gensvmenu(svorky)
           end
 
           prp.prierez = np
-          self.txt = gensvtxt(prp)
+          self.txt = gensvtxt(prp, zapojenie)
         end,
 
-        onKey = function(self, key) -- 43 + / 45 -
+        onKey = function(self, key)
           local prindex = 0
           for k, v in ipairs(_BEZNE_PRIEREZY) do
             if prp.prierez == v .. "mm" then
@@ -72,20 +86,20 @@ local function gensvmenu(svorky)
             end
           end
 
-          if key == 43 then
+          if key == 43 then -- +
             prindex = prindex + 1
 
             if prindex <= #_BEZNE_PRIEREZY then
               prp.prierez = _BEZNE_PRIEREZY[prindex] .. "mm"
-              self.txt = gensvtxt(prp)
+              self.txt = gensvtxt(prp,zapojenie)
             end
 
-          elseif key == 45 then
+          elseif key == 45 then -- -
             prindex = prindex - 1
 
             if prindex > 0 then
               prp.prierez = _BEZNE_PRIEREZY[prindex] .. "mm"
-              self.txt = gensvtxt(prp)
+              self.txt = gensvtxt(prp, zapojenie)
             end
           end
         end
@@ -121,7 +135,10 @@ local function gentab(zapojenie)
         local karty = {}
         local svorky = {}
 
-        for k, v in pairs(svky) do
+        for _k, v in pairs(svky) do
+          v.pristroj = k
+          v.pole = zapojenie.pole
+          v.skrina = zapojenie.skrina
           if #v.pristroj2 > 0 then
             if not karty[v.pristroj2] then
               karty[v.pristroj2] = {}
@@ -137,6 +154,9 @@ local function gentab(zapojenie)
               local svorkovnica = karta[v.pristroj3]
 
               table.insert(svorkovnica, v)
+            else
+              karta["@null"] = karta["@null"] or {}
+              table.insert(karta["@null"], v)
             end
           else
             table.insert(svorky, v)
@@ -149,18 +169,26 @@ local function gentab(zapojenie)
           local kopts = {}
           for nkarta, karta in pairs(karty) do
             table.insert(kopts,{
-              txt = nkarta .. string.rep(" ", math.floor(platform.term.width() / 8) - #nkarta),
+              txt = "%{underline}" .. nkarta .. "%{reset}" .. string.rep(" ", math.floor(platform.term.width() / 8) - #nkarta),
               action = function()
                 local svopts = {}
 
                 for ns, sv in pairs(karta) do
-                  table.insert(svopts, {
-                    txt = ns .. string.rep(" ", math.floor(platform.term.width() / 8) - #ns),
-                    action = function()
-                      table.insert(menus, gensvmenu(sv))
-                      focus = 4
+                  if ns ~= "@null" then
+                    table.insert(svopts, {
+                      txt = "%{underline}" .. ns .. "%{reset}" .. string.rep(" ", math.floor(platform.term.width() / 8) - #ns),
+                      action = function()
+                        table.insert(menus, gensvmenu(sv, zapojenie))
+                        focus = 4
+                      end
+                    })
+                  else
+                    local nsv = gensvmenu(sv, zapojenie)
+
+                    for k, v in pairs(nsv.options) do
+                      table.insert(svopts, v)
                     end
-                  })
+                  end
                 end
 
                 table.insert(menus, menu.new(platform.term.height() - 2, svopts))
@@ -173,7 +201,7 @@ local function gentab(zapojenie)
           table.insert(menus, menu.new(platform.term.height() - 2, kopts))
           focus = 2
         else
-          table.insert(menus, gensvmenu(svorky))
+          table.insert(menus, gensvmenu(svorky, zapojenie))
           focus = 2
         end
       end
