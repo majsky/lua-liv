@@ -51,6 +51,47 @@ local function gensvtxt(svorka, zapojenie)
   return txt:string()
 end
 
+local function remember(s)
+  local new = string.format("%s:%s-%s:%s-%s",
+    s.pristroj,
+    s.svorka,
+    s.cpristroj,
+    s.csvorka,
+    s.prierez
+  )
+
+  local replace = false
+
+  local lns = {}
+  local fh = io.open(s.pole .. "/" .. s.skrina .. "/prierezy.txt", "r")
+  if fh then
+    while true do
+      local line = fh:read("*l")
+      if not line then
+        break
+      end
+
+      local pris, sv, cpris, csv, pr = line:match("([^:]+):([^%-]+)%-([^:]+):([^%-]+)%-(.+)")
+
+      if s.pristroj == pris and s.svorka == sv and s.cpristroj == cpris and s.csvorka == csv then
+        table.insert(lns, new)
+        replace = true
+      else
+        table.insert(lns, line)
+      end
+    end
+    fh:close()
+  end
+
+  if not replace then
+    table.insert(lns, new)
+  end
+
+  fh = io.open(s.pole .. "/" .. s.skrina .. "/prierezy.txt", "w")
+  fh:write(table.concat(lns, "\n"))
+  fh:close()
+end
+
 local function gensvmenu(svorky, zapojenie)
   local svopts = {}
   local sv = {}
@@ -75,6 +116,7 @@ local function gensvmenu(svorky, zapojenie)
 
           prp.prierez = np
           self.txt = gensvtxt(prp, zapojenie)
+          remember(prp)
         end,
 
         onKey = function(self, key)
@@ -92,6 +134,7 @@ local function gensvmenu(svorky, zapojenie)
             if prindex <= #_BEZNE_PRIEREZY then
               prp.prierez = _BEZNE_PRIEREZY[prindex] .. "mm"
               self.txt = gensvtxt(prp,zapojenie)
+              remember(prp)
             end
 
           elseif key == 45 then -- -
@@ -100,6 +143,7 @@ local function gensvmenu(svorky, zapojenie)
             if prindex > 0 then
               prp.prierez = _BEZNE_PRIEREZY[prindex] .. "mm"
               self.txt = gensvtxt(prp, zapojenie)
+              remember(prp)
             end
           end
         end
