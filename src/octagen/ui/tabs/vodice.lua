@@ -143,7 +143,24 @@ local function gensvmenu(svorky, zapojenie)
           self.txt = gensvtxt(prp, zapojenie)
         end,
 
-        onKey = function(self, key)
+        onKey = function(self, key, reflected)
+          if key == "space" then
+            self.selected = not self.selected
+            return
+          elseif key == "," then
+            for _, mopt in pairs(svopts) do
+              mopt.selected = false
+            end
+          end
+
+          if not reflected then
+            for _, mopt in pairs(svopts) do
+              if mopt ~= self and mopt.selected then
+                mopt:onKey(key, true)
+              end
+            end
+          end
+
           local prindex = 0
           for k, v in ipairs(_BEZNE_PRIEREZY) do
             if prp.prierez == v .. "mm" then

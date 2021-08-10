@@ -4,9 +4,12 @@ local stringbuilder = require("octagen.utils.stringbuilder")
 local colors = require("octagen.ui.skin.4bit")
 local canvas = require("octagen.ui.canvas")
 local term = require("octagen.platform").term
+local icoload = require("octagen.ui.icoload")
 ---@type Menu
 local menu = {proto={}}
 local _menu = {__index=menu.proto}
+
+local _SELECT_ICON = icoload(0xf631, "X")
 
 local function cptbl(t)
   local n = {}
@@ -66,6 +69,10 @@ function menu.proto:draw(x, y, nofocus)
       sb:add(opt:gettext())
     else
       sb:add(opt.txt)
+    end
+
+    if opt.selected then
+      sb:add(" ", _SELECT_ICON, " ")
     end
 
     canvas:write(ansicolors(sb:string()))
