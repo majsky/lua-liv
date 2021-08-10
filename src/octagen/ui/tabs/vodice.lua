@@ -92,6 +92,31 @@ local function remember(s)
   fh:close()
 end
 
+local function nadstav(zap, sv, pr)
+  for _, ciel in pairs(zap.data[sv.cpristroj]) do
+    if ciel.cpristroj == sv.pristroj and ciel.csvorka == sv.svorka then
+      ciel.prierez = pr
+
+      if not ciel.skrina then
+        ciel.skrina = sv.skrina
+      end
+
+      if not ciel.pole then
+        ciel.pole = sv.pole
+      end
+
+      if not ciel.pristroj then
+        ciel.pristroj = sv.cpristroj
+      end
+
+      remember(ciel)
+    end
+  end
+
+  sv.prierez = pr
+  remember(sv)
+end
+
 local function gensvmenu(svorky, zapojenie)
   local svopts = {}
   local sv = {}
@@ -103,7 +128,7 @@ local function gensvmenu(svorky, zapojenie)
         txt = gensvtxt(prp, zapojenie),
         svtxt = prp.svorka,
         action = function(self)
-          local npr = prp.prierez:match("(.+)mm")
+          local npr = prp.prierez and prp.prierez:match("(.+)mm") or ""
           local i = input:new("Zadaj prierez", npr)
           local np = i:show()
           if np:sub(#np - 1, #np) ~= "mm" then
@@ -114,9 +139,8 @@ local function gensvmenu(svorky, zapojenie)
             end
           end
 
-          prp.prierez = np
+          nadstav(zapojenie, prp, np)
           self.txt = gensvtxt(prp, zapojenie)
-          remember(prp)
         end,
 
         onKey = function(self, key)
@@ -132,18 +156,16 @@ local function gensvmenu(svorky, zapojenie)
             prindex = prindex + 1
 
             if prindex <= #_BEZNE_PRIEREZY then
-              prp.prierez = _BEZNE_PRIEREZY[prindex] .. "mm"
+              nadstav(zapojenie, prp, _BEZNE_PRIEREZY[prindex] .. "mm")
               self.txt = gensvtxt(prp,zapojenie)
-              remember(prp)
             end
 
           elseif key == 45 then -- -
             prindex = prindex - 1
 
             if prindex > 0 then
-              prp.prierez = _BEZNE_PRIEREZY[prindex] .. "mm"
-              self.txt = gensvtxt(prp, zapojenie)
-              remember(prp)
+              nadstav(zapojenie, prp, _BEZNE_PRIEREZY[prindex] .. "mm")
+              self.txt = gensvtxt(prp,zapojenie)
             end
           end
         end
