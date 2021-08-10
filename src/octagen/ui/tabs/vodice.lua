@@ -161,7 +161,14 @@ local function gensvmenu(svorky, zapojenie)
       return false
     end
 
+    local al = #a.svtxt
+    local bl = #b.svtxt
+
+    if al == bl then
     return a.svtxt < b.svtxt
+    end
+
+    return al < bl
   end)
   return menu.new(platform.term.height() - 2, svopts)
 end
