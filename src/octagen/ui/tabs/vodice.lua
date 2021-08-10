@@ -152,7 +152,15 @@ local function gensvmenu(svorky, zapojenie)
             end
           end
 
-          if key == 43 then -- +
+          if type(key) == "string" then
+            local num = tonumber(key)
+            if num then
+              if num >= 0 and num < #_BEZNE_PRIEREZY then
+                nadstav(zapojenie, prp, _BEZNE_PRIEREZY[num + 1] .. "mm")
+                self.txt = gensvtxt(prp,zapojenie)
+              end
+            end
+          elseif key == 43 then -- +
             prindex = prindex + 1
 
             if prindex <= #_BEZNE_PRIEREZY then
