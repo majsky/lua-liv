@@ -69,6 +69,17 @@ local function copyto(src, dest)
   return dest
 end
 
+local function pytaj(adresa)
+  print(adresa:text().. ": zadaj smer (p/l):")
+
+  local char = nil
+  repeat
+    char = io.stdin:read(1)
+  until char == "p" or char == "l"
+
+  return char:upper()
+end
+
 function zap.proto:generuj(pristroje)
   local index = {}
   local function filter(a, s)
@@ -90,7 +101,7 @@ function zap.proto:generuj(pristroje)
     local stam = self:dajsvorku(tam, tu)
 
     if not stam then
-      print("Svorka " .. tam:text() .. " sa nenasla. (Chcem pripojit " .. tu:text() .. ")")
+      print("\n\nSvorka " .. tam:text() .. " sa nenasla. (Chcem pripojit " .. tu:text() .. ")")
     end
 
     local smtu = sv.smer
@@ -101,7 +112,7 @@ function zap.proto:generuj(pristroje)
 
     if not smtu then
       print(tu:text() .. " nema nasmerovanie, davam lave...")
-      smtu = "L"
+      smtu = pytaj(tu)
     end
 
     local smtam = stam.smer
@@ -111,13 +122,15 @@ function zap.proto:generuj(pristroje)
     end
 
     if not smtam then
-      print(tam:text() .. " nema nasmerovanie, davam lave...")
-      smtam = "L"
+      smtam = pytaj(tam)
     end
 
     local prierez = sv.prierez or stam.prierez
     if not prierez then
-      print(tu:text() .. "=>" .. tam:text() .. " nema prierez, davam 1,5...")
+      io.stdout:write(tu:text(), "=>", tam:text(), " nema prierez, davam 1...\n")
+      io.stdout:flush()
+      prierez = io.stdin:read("*l")
+    elseif prierez == "2,5mm" then
       prierez = "1,5mm"
     end
 
@@ -186,8 +199,9 @@ function zap.proto:dajsvorku(pristroj, svorka, cpristroj, csvorka)
         if s.cpristroj == cpristroj and s.csvorka == csvorka then
           return s
         end
+      else
+        return s
       end
-      return s
     end
   end
 end
