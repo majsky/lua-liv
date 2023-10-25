@@ -131,6 +131,7 @@ function banany.vyber(self)
                     end
                   })
                 end
+              table.sort(mskrine.options, function(a, b) return a.txt < b.txt end)
               table.insert(menus, mskrine)
               focus = 3
             end
