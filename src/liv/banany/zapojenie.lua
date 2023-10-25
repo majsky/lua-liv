@@ -104,22 +104,14 @@ function zap.proto:generuj(pristroje)
       print("\n\nSvorka " .. tam:text() .. " sa nenasla. (Chcem pripojit " .. tu:text() .. ")")
     end
 
-    local smtu = sv.smer
+    local smtu = pristroje.db[tu.pristroj] == "svorkovnica" and sv.smer or pristroje:nasmeruj(tu.pristroj, sv)
 
     if not smtu then
-      smtu = pristroje:nasmeruj(tu.pristroj, sv)
-    end
-
-    if not smtu then
-      print(tu:text() .. " nema nasmerovanie, davam lave...")
+      --print(tu:text() .. " nema nasmerovanie, davam lave...")
       smtu = pytaj(tu)
     end
 
-    local smtam = stam.smer
-
-    if not smtam then
-      smtam = pristroje:nasmeruj(tam.pristroj, stam)
-    end
+    local smtam = pristroje.db[stam.pristroj] == "svorkovnica" and stam.smer or pristroje:nasmeruj(tam.pristroj, stam)
 
     if not smtam then
       smtam = pytaj(tam)
@@ -132,6 +124,8 @@ function zap.proto:generuj(pristroje)
       prierez = io.stdin:read("*l")
     elseif prierez == "2,5mm" then
       prierez = "1,5mm"
+    elseif prierez == "6mm" then
+      prierez = "4mm"
     end
 
     if not banany[prierez] then
