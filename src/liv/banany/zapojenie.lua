@@ -95,13 +95,19 @@ function zap.proto:generuj(pristroje)
     return s.obsadena and (not s.vygenerovana) and (s.cpole == self.pole) and (s.cskrina == self.skrina)
   end
 
+  local firstErr = true
   local banany = {}
   for tu, sv in self:prejdi(filter) do
     local tam = addr.new(tu.pole, tu.skrina, sv.cpristroj, sv.cpristroj2, sv.cpristroj3, sv.csvorka)
     local stam = self:dajsvorku(tam, tu)
 
     if not stam then
-      print("\n\nSvorka " .. tam:text() .. " sa nenasla. (Chcem pripojit " .. tu:text() .. ")")
+      if firstErr then
+        print("\n")
+        firstErr = false
+      end
+      
+      print("Svorka " .. tam:text() .. " sa nenasla. (Chcem pripojit " .. tu:text() .. ")")
       if not _G.__VUJE then
         os.exit(1, true)
       end
