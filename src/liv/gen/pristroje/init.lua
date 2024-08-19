@@ -78,7 +78,8 @@ end
 function devapi.proto:nasmeruj(nazov, svorka)
     local typ = self.db[nazov]
     if not typ then
-        error("'" .. nazov .. "' nemá zaregistrovaný typ!")
+        print("'" .. nazov .. "' nemá zaregistrovaný typ!")
+        return "L"
     end
 
     if typ == "svorkovnica" then

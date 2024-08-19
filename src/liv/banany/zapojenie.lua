@@ -102,16 +102,35 @@ function zap.proto:generuj(pristroje)
 
     if not stam then
       print("\n\nSvorka " .. tam:text() .. " sa nenasla. (Chcem pripojit " .. tu:text() .. ")")
+      --os.exit(1, true)
+
+      stam = {
+        cpole = tu.pole,
+        cpristroj = tu.pristroj,
+        cpristroj2 = tu.pristroj2,
+        cpristroj3 = tu.pristroj3,
+        cskrina = tu.skrina,
+        csvorka = tu.svorka,
+
+        pristroj = tam.pristroj,
+        pristroj2 = tam.pristroj2,
+        pristroj3 = tam.pristroj3,
+        svorka = tam.svorka,
+
+        obsadena = true,
+        potencial = "",
+        prierez = "1,5mm"
+      }
     end
 
-    local smtu = pristroje.db[tu.pristroj] == "svorkovnica" and sv.smer or pristroje:nasmeruj(tu.pristroj, sv)
+    local smtu = pristroje.db[tu.pristroj] == "svorkovnica" and (sv.smer and sv.smer or "P") or pristroje:nasmeruj(tu.pristroj, sv)
 
     if not smtu then
       --print(tu:text() .. " nema nasmerovanie, davam lave...")
       smtu = pytaj(tu)
     end
 
-    local smtam = pristroje.db[stam.pristroj] == "svorkovnica" and stam.smer or pristroje:nasmeruj(tam.pristroj, stam)
+    local smtam = pristroje.db[stam.pristroj] == "svorkovnica" and (stam.smer and stam.smer or "P") or pristroje:nasmeruj(tam.pristroj, stam)
 
     if not smtam then
       smtam = pytaj(tam)
@@ -119,13 +138,15 @@ function zap.proto:generuj(pristroje)
 
     local prierez = sv.prierez or stam.prierez
     if not prierez then
-      io.stdout:write(tu:text(), "=>", tam:text(), " nema prierez, davam 1...\n")
+      io.stdout:write(tu:text(), "=>", tam:text(), " nema prierez, davam 1,5...\n")
+      prierez = "1,5mm"
       io.stdout:flush()
-      prierez = io.stdin:read("*l")
-    elseif prierez == "2,5mm" then
+ --     prierez = io.stdin:read("*l")
+  --[[  elseif prierez == "2,5mm" then
       prierez = "1,5mm"
     elseif prierez == "6mm" then
       prierez = "4mm"
+    ]]
     end
 
     if not banany[prierez] then
