@@ -79,6 +79,11 @@ function devapi.proto:nasmeruj(nazov, svorka)
     local typ = self.db[nazov]
     if not typ then
         print("'" .. nazov .. "' nemá zaregistrovaný typ!")
+
+        if not _G.__VUJE then
+            os.exit(1, true)
+        end
+
         return "L"
     end
 

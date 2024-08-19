@@ -102,7 +102,9 @@ function zap.proto:generuj(pristroje)
 
     if not stam then
       print("\n\nSvorka " .. tam:text() .. " sa nenasla. (Chcem pripojit " .. tu:text() .. ")")
-      --os.exit(1, true)
+      if not _G.__VUJE then
+        os.exit(1, true)
+      end
 
       stam = {
         cpole = tu.pole,
@@ -123,14 +125,16 @@ function zap.proto:generuj(pristroje)
       }
     end
 
-    local smtu = pristroje.db[tu.pristroj] == "svorkovnica" and (sv.smer and sv.smer or "P") or pristroje:nasmeruj(tu.pristroj, sv)
+    local smtu = pristroje.db[tu.pristroj] == "svorkovnica" and sv.smer or pristroje:nasmeruj(tu.pristroj, sv)
+    if _G.__VUJE and not smtu then smtu = "P" end
 
     if not smtu then
       --print(tu:text() .. " nema nasmerovanie, davam lave...")
       smtu = pytaj(tu)
     end
 
-    local smtam = pristroje.db[stam.pristroj] == "svorkovnica" and (stam.smer and stam.smer or "P") or pristroje:nasmeruj(tam.pristroj, stam)
+    local smtam = pristroje.db[stam.pristroj] == "svorkovnica" and stam.smer or pristroje:nasmeruj(tam.pristroj, stam)
+    if _G.__VUJE and not smtam then smtam = "P" end
 
     if not smtam then
       smtam = pytaj(tam)
@@ -139,9 +143,13 @@ function zap.proto:generuj(pristroje)
     local prierez = sv.prierez or stam.prierez
     if not prierez then
       io.stdout:write(tu:text(), "=>", tam:text(), " nema prierez, davam 1,5...\n")
-      prierez = "1,5mm"
       io.stdout:flush()
- --     prierez = io.stdin:read("*l")
+
+      if not _G.__VUJE then
+        prierez = io.stdin:read("*l")
+      else
+        prierez = "1,5mm"
+      end   
   --[[  elseif prierez == "2,5mm" then
       prierez = "1,5mm"
     elseif prierez == "6mm" then
@@ -162,6 +170,10 @@ function zap.proto:generuj(pristroje)
     stam.vygenerovana = true
   end
 
+  if _G.__VUJE then
+  print("\n OK!")
+  io.stdin:read("*l")
+  end
   pristroje:ulozLog(self.pole .. "/" .. self.skrina .. "/banany.log")
   return banany
 end
