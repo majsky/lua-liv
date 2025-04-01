@@ -54,7 +54,7 @@ local function gentabline()
       tl:add(" ")
     end
 
-    tl:add("%{", tc, "bg ", colors.main.tab.fg, "}", icons.tab.r, " ")
+    tl:add("%{", tc, "bg ", colors.main.tab.fg, "}", icons.tab.r, "")
   end
 
   return ansicolors(tl:string())

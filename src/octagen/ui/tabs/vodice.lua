@@ -6,7 +6,7 @@ local stringbuilder = require("octagen.utils.stringbuilder")
 
 local vodice = {
   proto={
-    icon = icoload(0xfac8)
+    icon = icoload(0xf05c9)
   }
 }
 

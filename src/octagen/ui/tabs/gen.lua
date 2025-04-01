@@ -14,7 +14,7 @@ local stringbuilder = require("octagen.utils.stringbuilder")
 
 local gen = {
   name = "GENEROVAŤ",
-  icon = icoload(0xfc73)
+  icon = icoload(0xf0674)
 }
 
 local function _exists(what, where)

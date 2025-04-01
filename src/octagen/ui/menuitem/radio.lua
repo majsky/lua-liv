@@ -5,8 +5,8 @@ local icoload = require("octagen.ui.icoload")
 local rmi = class.new("octagen.ui.menuitem.toggle")
 
 rmi.icons = {
-  [true] = icoload(0xf93d, "X"),
-  [false] = icoload(0xf93c, " ")
+  [true] = icoload(0xf192, "X"),
+  [false] = icoload(0xf10c, " ")
 }
 
 function rmi:init(group, txt, isdefault)

@@ -13,7 +13,7 @@ local term = platform.term
 local icons = {
   dir = icoload(0xf413, "D"),
   file = icoload(0xf15b, " "),
-  up = icoload(0xfc35, "^"),
+  up = icoload(0xf148, "^"),
   csv = icoload(0xf0ce, " "),
 }
 

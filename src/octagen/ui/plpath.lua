@@ -7,7 +7,7 @@ local icoload = require("octagen.ui.icoload")
 local icons = {
   sep = icoload(0xe0b1, ">"),
   pathend = icoload(0xe0b0, ""),
-  drive = icoload(0xf7c9, "")
+  drive = icoload(0xf02ca, "")
 }
 
 return function (path, bg)
