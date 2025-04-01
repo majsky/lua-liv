@@ -13,6 +13,14 @@ local console = {
   }
 }
 
+local function _exec(cmd)
+  local hnd = io.popen(cmd, "r")
+  local data = hnd:read("*a")
+  hnd:close()
+
+  return data
+end
+
 function console.getsize()
   local ansicon = os.getenv("ANSICON")
 
@@ -80,11 +88,19 @@ function console.getkey()
 end
 
 function console.iscolor()
-  return os.getenv("ANSICON_DEF") ~= nil
+  return true
+end
+
+function console.getCP()
+  return _exec("chcp"):match("%d+")
+end
+
+function console.isutf8()
+  return console.getCP() == "65001"
 end
 
 function console.isicon()
-  return os.getenv("ConEmuBuild") ~= nil
+  return os.getenv("ConEmuBuild") ~= nil or console.isutf8()
 end
 
 return console
