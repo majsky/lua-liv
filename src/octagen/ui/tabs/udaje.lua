@@ -73,7 +73,9 @@ function udaje.draw()
   io.stdout:write("Aktualne sa pouziva:")
   for i, d in pairs(udaje.data) do
     term.curpos(tw, 2 + i)
-    io.stdout:write(badges[d.type], " ", plpath(d.path))
+
+    local _, e = d.path:find("WTEMP\\vcs\\")
+    io.stdout:write(badges[d.type], " ", plpath(d.path:sub(e + 1), "black", true))
   end
 end
 
