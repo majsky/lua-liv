@@ -119,7 +119,9 @@ function menu.proto:update(key)
   -- END
   elseif key == 79 then
     self.current = #self.options
-    self.scroll = #self.options - self.height + 2
+    if self.current >= self.height then
+      self.scroll = #self.options - self.height + 2
+    end
 
   --PG UP
   elseif key == 73 then
