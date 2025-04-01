@@ -91,7 +91,7 @@ function menu.proto:setcanvas(canvas)
   self.canvas = canvas
 end
 
----@param key string
+---@param key string | number
 function menu.proto:update(key)
   if key == "up" then
     if self.current > 1 then
@@ -111,6 +111,32 @@ function menu.proto:update(key)
       end
     end
 
+  -- HOME
+  elseif key == 71 then
+    self.current = 1
+    self.scroll = 1
+
+  -- END
+  elseif key == 79 then
+    self.current = #self.options
+    self.scroll = #self.options - self.height + 2
+
+  --PG UP
+  elseif key == 73 then
+    self.current = math.max(1, self.current - self.height)
+    if self.current > self.height then
+      self.scroll = self.current - self.height + 2
+    else
+      self.scroll = 1
+    end
+
+  --PG DN
+  elseif key == 81 then
+    self.current = math.min(#self.options, self.current + self.height)
+    if self.current > self.height then
+      self.scroll = self.current - self.height + 2
+    end
+  
   elseif key == "enter" then
     self.options[self.current]:action()
 
