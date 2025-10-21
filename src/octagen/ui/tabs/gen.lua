@@ -98,15 +98,17 @@ function banany.vyber(self)
                     txt = nskrina,
                     action = function()
                       local klo = nil
+                      local script = nil
 
                       for i, dat in pairs(udaje.data) do
                         if dat.type == "klo" then
                           klo = dat.data
-                          break
+                        elseif dat.type == "lua" then
+                          script = dat.data
                         end
                       end
 
-                      local zap = zapojenie.new(adresa.new(npole, nskrina), d.data, klo)
+                      local zap = zapojenie.new(adresa.new(npole, nskrina), d.data, klo, script)
                       local files = scandirs(npole, nskrina)
 
                       if files and files["doplnenie.txt"] then

@@ -1,4 +1,5 @@
 local csvreader = require("liv.import.csv")
+local scriptreader = require("liv.import.script")
 
 local _import = {}
 local import = setmetatable({}, _import)
@@ -15,6 +16,8 @@ function _import.__call(t, path, type)
 
   if _ext == "csv" then
     return csvreader.read(path)
+  elseif _ext == "lua" then
+    return scriptreader(path)
   else
     error("Nemozno importovat: Neznamy subor: " .. path)
   end

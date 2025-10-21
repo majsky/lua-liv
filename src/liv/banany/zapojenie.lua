@@ -10,8 +10,9 @@ local _zap = {__index=zap.proto}
 ---@param adresa Addresa
 ---@param gan Gan
 ---@param klo Klo
+---@param script UserScript
 ---@return Zapojenie
-function zap.new(adresa, gan, klo)
+function zap.new(adresa, gan, klo, script)
   ---@class Zapojenie
   local o = {
     pole = adresa.pole,
@@ -21,7 +22,8 @@ function zap.new(adresa, gan, klo)
     svorkovnice = {},
     doplnene = {
       prierezy = {}
-    }
+    },
+    script = script
   }
 
   if not gan[o.pole] then
@@ -147,6 +149,19 @@ function zap.proto:generuj(pristroje)
     end
 
     local prierez = sv.prierez or stam.prierez
+
+    if self.script and self.script.prierez then
+      local status, err = pcall(self.script.prierez, prierez, sv, tu, tam)
+
+      if not status then
+        print("\n\n\n")
+        print("Chyba skriptu!")
+        error(err)
+      end
+
+      prierez = err or prierez
+    end
+
     if not prierez then
       io.stdout:write(tu:text(), "=>", tam:text(), " nema prierez, davam 1,5...\n")
       io.stdout:flush()
