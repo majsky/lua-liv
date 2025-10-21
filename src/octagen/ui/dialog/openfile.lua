@@ -15,6 +15,7 @@ local icons = {
   file = icoload(0xf15b, " "),
   up = icoload(0xf148, "^"),
   csv = icoload(0xf0ce, " "),
+  lua = icoload(0xf08b1, "S"),
 }
 
 local function dir()
@@ -97,10 +98,11 @@ return function()
       win:curpos(1, ln + 1)
       local icon = isdir(fname) and icons.dir or icons.file
 
+      local _ext = ext(fname)
       if fname == ".." then
         icon = icons.up
-      elseif ext(fname) == "csv" then
-        icon = icons.csv
+      elseif icons[_ext] then
+        icon = icons[_ext]
       end
 
       if ln == sel then
