@@ -42,7 +42,7 @@ function addr.new(pole, skrina, pristroj, pristroj2, pristroj3, svorka)
     pristroj = rmprefix(pristroj)
     pristroj2 = rmprefix(pristroj2)
     pristroj3 = rmprefix(pristroj3)
-    svorka = rmprefix(svorka)
+    svorka = svorka
 
     o = {
       pole = pole,
