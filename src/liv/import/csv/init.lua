@@ -104,7 +104,11 @@ function csvreader.read(path)
   for ln, l in ipairs(csv) do
     ncsv[ln] = {}
     for k, v in pairs(l) do
-      ncsv[ln][k] = odstranBordel(v)
+      if k ~= "potencial" and k ~= "svorka" and k ~= "csvorka" and k ~= "lsvorka" and k ~= "rsvorka" then
+        ncsv[ln][k] = odstranBordel(v, k)
+      else
+        ncsv[ln][k] = (v:gsub("^%s*(.-)%s*$", "%1"))
+      end
     end
   end
 
